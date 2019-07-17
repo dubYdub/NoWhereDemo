@@ -64,6 +64,8 @@ PlayGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.logo1);
     gEngine.Textures.unloadTexture(this.kBg);
     gEngine.Textures.unloadTexture(this.kBgNormal);
+    //    gEngine.Textures.unloadTexture(this.kLogo);
+    gEngine.Core.startScene(new StartUI());
 
 };
 
@@ -489,5 +491,9 @@ PlayGame.prototype.update = function () {
         this.mItem5.getXform().setXPos(-1);
         this.mItem5.getXform().setYPos(-1);
         this.mItem5BBox = this.mItem5.getBBox();
+    }
+
+    if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Middle)) {
+        gEngine.GameLoop.stop();   
     }
 };
