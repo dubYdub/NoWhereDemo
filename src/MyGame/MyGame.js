@@ -23,8 +23,8 @@
         this.mSign = null;
         // For echo message
         this.mMsg = null;
-        this.mMsg2 = null;
-        this.mCamera2 = null;
+        this.mCaption = null;
+        
         
     }
     gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -83,6 +83,9 @@
         
         
 
+        
+        
+
 
     };
 
@@ -99,6 +102,8 @@
 //      this.mMsg.draw(this.mCamera);
         this.mMsg2.draw(this.mCamera);
         
+        this.mCaption.draw(this.mCamera);
+        
 //        this.mCamera2.setupViewProjection();
 //        this.mLogo.draw(this.mCamera2);
 //        this.mSpark.draw(this.mCamera2);
@@ -114,6 +119,10 @@
         
         this.mCamera.update();
         this.mCamera2.update();
+        
+        // For test
+//        gEngine.GameLoop.stop();
+
         
         // Update the size and color of the spark
         var temp = this.mSpark.getXform().getWidth();
@@ -136,11 +145,9 @@
         
         
         // switch to start UI when press ENTER
-        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Enter)) {
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
             gEngine.GameLoop.stop();
         }
-        
-        
         
 
     };

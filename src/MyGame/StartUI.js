@@ -29,7 +29,7 @@ StartUI.prototype.loadScene = function () {
 
 // Load the scenes base on the value of mNextScene
 StartUI.prototype.unloadScene = function () {
-    gEngine.Textures.unloadTexture(this.kLogo1);
+//    gEngine.Textures.unloadTexture(this.kLogo1);
     if (this.mNextScene == "PlayGame") {
         gEngine.Core.startScene(new PlayGame());
     } else if (this.mNextScene == "AuthorInfo") {
