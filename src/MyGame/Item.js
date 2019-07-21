@@ -17,7 +17,7 @@ function Item(spriteTexture) {
     this.item = new SpriteRenderable(spriteTexture);
     //this.mDye.setColor([1, 1, 1, 0]);
     this.item.getXform().setPosition(35, 35);
-    this.item.getXform().setSize(3, 3);
+    this.item.getXform().setSize(2.3, 2.3);
     //this.mDye.setElementPixelPositions(0, 120, 0, 180);
     GameObject.call(this, this.item);
 }

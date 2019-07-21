@@ -14,10 +14,14 @@
 function PlayGame3() {    
     // The camera to view the scene
     this.logo1 = "assets/Map3Clues/black.png"
-    this.heroLogo = "assets/Map3Clues/blue-yellow.png"
+    this.heroLogo = "assets/Map3Clues/play3.png"
     this.logo_item = "assets/Map3Clues/item-red.png"
     this.logo_clue = "assets/Map3Clues/clue-red.png"
     this.kBg = "assets/bg.png";
+    
+    this.bgmusic = "assets/bgm/4.mp3";
+    this.bgmusic2 = "assets/bgm/5.mp3";
+    this.door = "assets/door.png";
 
     this.kBgNormal = "assets/bg_normal.png";
     this.kCaption1 = "assets/Map3Clues/openWords.png";
@@ -31,6 +35,14 @@ function PlayGame3() {
     this.kCaption9 = "assets/Map3Clues/clue8.png";
     this.kCaption10 = "assets/Map3Clues/clue9.png";
     this.kCaption11 = "assets/Map3Clues/endWords.png";
+    
+    this.trans1 = "assets/Map4Clues/trans-blue.png";
+    this.trans2 = "assets/Map4Clues/trans-green.png";
+    this.trans3 = "assets/Map4Clues/trans-grey.png";
+    this.trans4 = "assets/Map4Clues/trans-orange.png";
+    this.trans5 = "assets/Map4Clues/trans-purple.png";
+    this.trans6 = "assets/Map4Clues/trans-red.png";
+    this.trans7 = "assets/Map4Clues/trans-yellow.png";
     
     this.mCamera = null;
     this.msquare1 = null;
@@ -94,6 +106,12 @@ function PlayGame3() {
     this.msquare59 = null;
     this.msquare60 = null;
     this.msquare61 = null;
+    
+        
+    this.mBsquare1 = null;
+    this.mBsquare2 = null;
+    this.mBsquare3 = null;
+    this.mBsquare4 = null;
 
     this.mHero = null;
     this.mItem1 = null; 
@@ -115,6 +133,7 @@ function PlayGame3() {
     this.mItem17 = null;
     this.mItem18 = null;
     this.mItem19 = null;
+    this.mItem20 = null;
     
     this.mItem1BBox = null;
     this.mItem2BBox = null;
@@ -135,18 +154,22 @@ function PlayGame3() {
     this.mItem17BBox = null;
     this.mItem18BBox = null;
     this.mItem19BBox = null;
+    this.mItem20BBox = null;
+
      
     this.heroLight = null;
     this.heroCamera = null;
     this.mGlobalLightSet = null;
     this.mBg = null;
     
-    this.kDelta = 0.3;
+    this.kDelta = 0.18;
     this.deltaV = 0.1;
     
     
     this.mMsg = null;
     this.mPositionMsg = null;
+    this.mClueMsg = null;
+    this.mClueNum = 8;
     this.mStartCaption = null;
     this.mEndCaption = null;
     this.mStartTimer = 120;
@@ -166,7 +189,7 @@ function PlayGame3() {
     this.mBlackScene = null;
     this.mHeroPoint = null;
     
-    
+    this.switch_music = 0;
 }
 
 gEngine.Core.inheritPrototype(PlayGame3, Scene);
@@ -191,18 +214,34 @@ PlayGame3.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kCaption9);
     gEngine.Textures.loadTexture(this.kCaption10);
     gEngine.Textures.loadTexture(this.kCaption11);
+    gEngine.Textures.loadTexture(this.door);
+    gEngine.Textures.loadTexture(this.trans1);
+    gEngine.Textures.loadTexture(this.trans2);
+    gEngine.Textures.loadTexture(this.trans3);
+    gEngine.Textures.loadTexture(this.trans4);
+    gEngine.Textures.loadTexture(this.trans5);
+    gEngine.Textures.loadTexture(this.trans6);
+    gEngine.Textures.loadTexture(this.trans7);
+
+    
+    gEngine.AudioClips.loadAudio(this.bgmusic);    
+    gEngine.AudioClips.loadAudio(this.bgmusic2);
+
 //    gEngine.Textures.loadTexture(this.Caption1);
 };
 
 PlayGame3.prototype.unloadScene = function () {
+    gEngine.AudioClips.stopBackgroundAudio();
 //    gEngine.Textures.unloadTexture(this.logo1);
 //    gEngine.Textures.unloadTexture(this.kBg);
 //    gEngine.Textures.unloadTexture(this.kBgNormal);
 //    gEngine.Textures.unloadTexture(this.Caption1);
 
     //    gEngine.Textures.unloadTexture(this.kLogo);
-    if (this.nextScene === "Map2") {
-        gEngine.Core.startScene(new StartUI());
+    if (this.nextScene === "Map4") {
+        gEngine.Core.startScene(new PlayGame4());
+    } else if (this.nextScene === "Myself") {
+        gEngine.Core.startScene(new PlayGame3());
     } else {
         gEngine.Core.startScene(new StartUI());
     }
@@ -219,7 +258,7 @@ PlayGame3.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([1,0.98,0.85,1]);   
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
    
-   
+    gEngine.AudioClips.playBackgroundAudio(this.bgmusic);
   
     
     this.msquare1 = new Item(this.logo1);
@@ -379,7 +418,7 @@ PlayGame3.prototype.initialize = function () {
     this.msquare39.getXform().setSize(90, 5);
     
     this.msquare40 = new Item(this.logo1);
-    this.msquare40.getXform().setPosition(60, 26.25);
+    this.msquare40.getXform().setPosition(60, 23.75);
     this.msquare40.getXform().setSize(10, 37.5);
     
     this.msquare41 = new Item(this.logo1);
@@ -466,7 +505,25 @@ PlayGame3.prototype.initialize = function () {
     this.msquare61.getXform().setPosition(36.25, 25);
     this.msquare61.getXform().setSize(2.5, 5);
     
+    this.mBsquare1 = new Renderable();
+    this.mBsquare1.getXform().setPosition(-100, 50);
+    this.mBsquare1.getXform().setSize(200, 200);
+    this.mBsquare1.setColor([0, 0, 0, 1]);
     
+    this.mBsquare2 = new Renderable();
+    this.mBsquare2.getXform().setPosition(200, 50);
+    this.mBsquare2.getXform().setSize(200, 200);
+    this.mBsquare2.setColor([0, 0, 0, 1]);
+    
+    this.mBsquare3 = new Renderable();
+    this.mBsquare3.getXform().setPosition(50, 125);
+    this.mBsquare3.getXform().setSize(100, 50);
+    this.mBsquare3.setColor([0, 0, 0, 1]);
+    
+    this.mBsquare4 = new Renderable();
+    this.mBsquare4.getXform().setPosition(50, -25);
+    this.mBsquare4.getXform().setSize(100, 50);
+    this.mBsquare4.setColor([0, 0, 0, 1]);
 
     this.mHero = new Hero(this.heroLogo);
     this.mHero.getXform().setPosition(57.5, 97.5);
@@ -535,72 +592,72 @@ PlayGame3.prototype.initialize = function () {
     
     //道具1
     this.mItem1 = new Item(this.logo_clue);
-    this.mItem1.getXform().setXPos(67.5);
-    this.mItem1.getXform().setYPos(24);
+    this.mItem1.getXform().setXPos(68.75);
+    this.mItem1.getXform().setYPos(23.75);
     
     this.mItem2 = new Item(this.logo_clue);
-    this.mItem2.getXform().setXPos(13);
-    this.mItem2.getXform().setYPos(28);
+    this.mItem2.getXform().setXPos(13.75);
+    this.mItem2.getXform().setYPos(28.75);
     
     this.mItem3 = new Item(this.logo_clue);
-    this.mItem3.getXform().setXPos(13);
-    this.mItem3.getXform().setYPos(12.7);
+    this.mItem3.getXform().setXPos(13.75);
+    this.mItem3.getXform().setYPos(13.75);
     
     this.mItem4 = new Item(this.logo_clue);
-    this.mItem4.getXform().setXPos(48);
-    this.mItem4.getXform().setYPos(52);
+    this.mItem4.getXform().setXPos(48.75);
+    this.mItem4.getXform().setYPos(51.25);
     
     this.mItem5 = new Item(this.logo_clue);
-    this.mItem5.getXform().setXPos(35);
-    this.mItem5.getXform().setYPos(72);
+    this.mItem5.getXform().setXPos(33.75);
+    this.mItem5.getXform().setYPos(73.75);
     
     this.mItem6 = new Item(this.logo_clue);
-    this.mItem6.getXform().setXPos(87);
-    this.mItem6.getXform().setYPos(79.5);
+    this.mItem6.getXform().setXPos(88.75);
+    this.mItem6.getXform().setYPos(81.25);
     
     this.mItem7 = new Item(this.logo_clue);
-    this.mItem7.getXform().setXPos(67.5);
-    this.mItem7.getXform().setYPos(18);
+    this.mItem7.getXform().setXPos(66.25);
+    this.mItem7.getXform().setYPos(18.75);
     
     this.mItem8 = new Item(this.logo_clue);
-    this.mItem8.getXform().setXPos(87);
-    this.mItem8.getXform().setYPos(7);
+    this.mItem8.getXform().setXPos(86.25);
+    this.mItem8.getXform().setYPos(6.25);
     
-    this.mItem9 = new Item(this.logo_item);
-    this.mItem9.getXform().setXPos(13);
-    this.mItem9.getXform().setYPos(84);
+    this.mItem9 = new Item(this.trans1);
+    this.mItem9.getXform().setXPos(13.75);
+    this.mItem9.getXform().setYPos(83.75);
     
     this.mItem10 = new Item(this.logo_item);
-    this.mItem10.getXform().setXPos(9);
-    this.mItem10.getXform().setYPos(73);
+    this.mItem10.getXform().setXPos(11.25);
+    this.mItem10.getXform().setYPos(71.25);
     
-    this.mItem11 = new Item(this.logo_item);
-    this.mItem11.getXform().setXPos(21);
-    this.mItem11.getXform().setYPos(7);
+    this.mItem11 = new Item(this.trans2);
+    this.mItem11.getXform().setXPos(21.25);
+    this.mItem11.getXform().setYPos(6.25);
     
-    this.mItem12 = new Item(this.logo_item);
-    this.mItem12.getXform().setXPos(48);
-    this.mItem12.getXform().setYPos(45);
+    this.mItem12 = new Item(this.trans3);
+    this.mItem12.getXform().setXPos(48.75);
+    this.mItem12.getXform().setYPos(46.25);
     
     this.mItem13 = new Item(this.logo_item);
-    this.mItem13.getXform().setXPos(53);
-    this.mItem13.getXform().setYPos(35);
+    this.mItem13.getXform().setXPos(53.75);
+    this.mItem13.getXform().setYPos(36.25);
     
-    this.mItem14 = new Item(this.logo_item);
-    this.mItem14.getXform().setXPos(57);
-    this.mItem14.getXform().setYPos(46.5);
+    this.mItem14 = new Item(this.trans4);
+    this.mItem14.getXform().setXPos(58.75);
+    this.mItem14.getXform().setYPos(43.75);
     
-    this.mItem15 = new Item(this.logo_item);
-    this.mItem15.getXform().setXPos(93);
-    this.mItem15.getXform().setYPos(17.5);
+    this.mItem15 = new Item(this.trans5);
+    this.mItem15.getXform().setXPos(93.75);
+    this.mItem15.getXform().setYPos(18.75);
     
-    this.mItem16 = new Item(this.logo_item);
-    this.mItem16.getXform().setXPos(82.5);
-    this.mItem16.getXform().setYPos(34.2);
+    this.mItem16 = new Item(this.trans6);
+    this.mItem16.getXform().setXPos(81.25);
+    this.mItem16.getXform().setYPos(36.25);
     
-    this.mItem17 = new Item(this.logo_item);
-    this.mItem17.getXform().setXPos(77);
-    this.mItem17.getXform().setYPos(80);
+    this.mItem17 = new Item(this.trans7);
+    this.mItem17.getXform().setXPos(78.75);
+    this.mItem17.getXform().setYPos(78.75);
     
     this.mItem18 = new Item(this.logo_item);
     this.mItem18.getXform().setXPos(50);
@@ -609,6 +666,11 @@ PlayGame3.prototype.initialize = function () {
     this.mItem19 = new Item(this.logo_item);
     this.mItem19.getXform().setXPos(50);
     this.mItem19.getXform().setYPos(2.5);
+    
+    this.mItem20 = new Item(this.door);
+    this.mItem20.getXform().setXPos(97.5);
+    this.mItem20.getXform().setYPos(55);
+    this.mItem20.getXform().setSize(5,5);
     
     this.mMsg = new FontRenderable("");
     this.mMsg.setColor([1, 1, 1, 1]);
@@ -619,6 +681,11 @@ PlayGame3.prototype.initialize = function () {
     this.mPositionMsg.setColor([1, 1, 1, 1]);
     this.mPositionMsg.getXform().setPosition(0, 0);
     this.mPositionMsg.setTextHeight(4);
+
+    this.mClueMsg = new FontRenderable("");
+    this.mClueMsg.setColor([0.97, 0.952, 0.8196, 1]);
+    this.mClueMsg.getXform().setPosition(75, 75);
+    this.mClueMsg.setTextHeight(3);
      
     // 光效
     this._initializeLights(this.mHero.getXform().getPosition());
@@ -653,6 +720,7 @@ PlayGame3.prototype.initialize = function () {
      this.mItem17BBox = this.mItem17.getBBox();
      this.mItem18BBox = this.mItem18.getBBox();
      this.mItem19BBox = this.mItem19.getBBox();
+     this.mItem20BBox = this.mItem20.getBBox();
      
      this.mStartCaption = new Caption(this.kCaption1);
      this.mCaptionA = new Caption(this.kCaption2);
@@ -800,6 +868,11 @@ PlayGame3.prototype.draw = function () {
     this.msquare60.draw(this.mCamera);
     this.msquare61.draw(this.mCamera);
     
+    this.mBsquare1.draw(this.mCamera);
+    this.mBsquare2.draw(this.mCamera);
+    this.mBsquare3.draw(this.mCamera);
+    this.mBsquare4.draw(this.mCamera);
+    
     this.mHero.draw(this.mCamera);
     this.mItem1.draw(this.mCamera);
     this.mItem2.draw(this.mCamera); 
@@ -820,6 +893,7 @@ PlayGame3.prototype.draw = function () {
     this.mItem17.draw(this.mCamera);
     this.mItem18.draw(this.mCamera);
     this.mItem19.draw(this.mCamera);
+    this.mItem20.draw(this.mCamera);
     
     this.mStartCaption.draw(this.mCamera);
     this.mCaptionA.draw(this.mCamera);
@@ -837,6 +911,8 @@ PlayGame3.prototype.draw = function () {
     
     this.mMsg.draw(this.mCamera);
     this.mPositionMsg.draw(this.mCamera);
+    this.mClueMsg.draw(this.mCamera);
+
     
 };
 
@@ -948,7 +1024,8 @@ PlayGame3.prototype.update = function () {
                     hBbox.intersectsBound(this.sq58Bbox) ||
                     hBbox.intersectsBound(this.sq59Bbox) ||
                     hBbox.intersectsBound(this.sq60Bbox) ||
-                    hBbox.intersectsBound(this.sq61Bbox)
+                    hBbox.intersectsBound(this.sq61Bbox) ||
+                    hBbox.intersectsBound(this.mItem20BBox)
                     ){
                 xform.incYPosBy(-this.kDelta);      
             }
@@ -1023,7 +1100,8 @@ PlayGame3.prototype.update = function () {
                     hBbox.intersectsBound(this.sq58Bbox) ||
                     hBbox.intersectsBound(this.sq59Bbox) ||
                     hBbox.intersectsBound(this.sq60Bbox) ||
-                    hBbox.intersectsBound(this.sq61Bbox)
+                    hBbox.intersectsBound(this.sq61Bbox) ||
+                    hBbox.intersectsBound(this.mItem20BBox)
                     ){
                 xform.incYPosBy(this.kDelta);      
             }
@@ -1098,7 +1176,8 @@ PlayGame3.prototype.update = function () {
                     hBbox.intersectsBound(this.sq58Bbox) ||
                     hBbox.intersectsBound(this.sq59Bbox) ||
                     hBbox.intersectsBound(this.sq60Bbox) ||
-                    hBbox.intersectsBound(this.sq61Bbox)               
+                    hBbox.intersectsBound(this.sq61Bbox) ||
+                    hBbox.intersectsBound(this.mItem20BBox)              
                     ){
                 xform.incXPosBy(this.kDelta);      
             }
@@ -1171,7 +1250,8 @@ PlayGame3.prototype.update = function () {
                     hBbox.intersectsBound(this.sq58Bbox) ||
                     hBbox.intersectsBound(this.sq59Bbox) ||
                     hBbox.intersectsBound(this.sq60Bbox) ||
-                    hBbox.intersectsBound(this.sq61Bbox)
+                    hBbox.intersectsBound(this.sq61Bbox) ||
+                    hBbox.intersectsBound(this.mItem20BBox)
                     ){
                 xform.incXPosBy(-this.kDelta);      
             }
@@ -1240,7 +1320,7 @@ PlayGame3.prototype.update = function () {
     }
     
     if(hBbox.intersectsBound(this.mItem9BBox)){ 
-        this.mHero.getXform().setSize(1.5, 1.5);
+        this.mHero.getXform().setSize(3, 3);
         this.mHero.getXform().setPosition(35, 55);
 //        this.mItem9.getXform().setXPos(-1);
 //        this.mItem9.getXform().setYPos(-1);
@@ -1256,16 +1336,16 @@ PlayGame3.prototype.update = function () {
     }
     
     if(hBbox.intersectsBound(this.mItem11BBox)){    
-        this.mHero.getXform().setSize(1.5, 1.5);
-        this.mHero.getXform().setPosition(47.5, 59);
+        this.mHero.getXform().setSize(3, 3);
+        this.mHero.getXform().setPosition(47.5, 57.5);
 //        this.mItem11.getXform().setXPos(-1);
 //        this.mItem11.getXform().setYPos(-1);
 //        this.mItem11BBox = this.mItem11.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem12BBox)){
-        this.mHero.getXform().setSize(1.5, 1.5);
-        this.mHero.getXform().setPosition(88, 72);
+        this.mHero.getXform().setSize(3, 3);
+        this.mHero.getXform().setPosition(87.5, 72.6);
 //        this.mItem12.getXform().setXPos(-1);
 //        this.mItem12.getXform().setYPos(-1);
 //        this.mItem12BBox = this.mItem12.getBBox();
@@ -1280,16 +1360,16 @@ PlayGame3.prototype.update = function () {
     }
     
     if(hBbox.intersectsBound(this.mItem14BBox)){
-        this.mHero.getXform().setSize(1.5, 1.5);
-        this.mHero.getXform().setPosition(82, 24);
+        this.mHero.getXform().setSize(3, 3);
+        this.mHero.getXform().setPosition(82.5, 25);
 //        this.mItem14.getXform().setXPos(-1);
 //        this.mItem14.getXform().setYPos(-1);
 //        this.mItem14BBox = this.mItem14.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem15BBox)){
-        this.mHero.getXform().setSize(1.5, 1.5);
-        this.mHero.getXform().setPosition(57.5, 73);
+        this.mHero.getXform().setSize(3, 3);
+        this.mHero.getXform().setPosition(57.5, 77.5);
 //        this.mItem15.getXform().setXPos(-1);
 //        this.mItem15.getXform().setYPos(-1);
 //        this.mItem15BBox = this.mItem15.getBBox();
@@ -1297,7 +1377,7 @@ PlayGame3.prototype.update = function () {
     
     
     if(hBbox.intersectsBound(this.mItem16BBox)){
-        this.mHero.getXform().setSize(1.5, 1.5);
+        this.mHero.getXform().setSize(3, 3);
         this.mHero.getXform().setPosition(52.5, 20);
 //        this.mItem16.getXform().setXPos(-1);
 //        this.mItem16.getXform().setYPos(-1);
@@ -1305,8 +1385,8 @@ PlayGame3.prototype.update = function () {
     }
     
     if(hBbox.intersectsBound(this.mItem17BBox)){
-        this.mHero.getXform().setSize(1.5, 1.5);
-        this.mHero.getXform().setPosition(77, 13);
+        this.mHero.getXform().setSize(3, 3);
+        this.mHero.getXform().setPosition(77.5, 12.5);
 //        this.mItem17.getXform().setXPos(-1);
 //        this.mItem17.getXform().setYPos(-1);
 //        this.mItem17BBox = this.mItem17.getBBox();
@@ -1324,26 +1404,29 @@ PlayGame3.prototype.update = function () {
         this.mItem19.getXform().setYPos(-1);
         this.mItem19BBox = this.mItem19.getBBox();
     }
+    
+    
 
     if (gEngine.Input.isButtonPressed(gEngine.Input.mouseButton.Middle)) {
         gEngine.GameLoop.stop();   
     }
     
     // press V to follow
-    if (gEngine.Input.isKeyReleased(gEngine.Input.keys.V)) { 
-        if (this.mCamera.getWCWidth() == 100) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.V)) { 
+        //if (this.mCamera.getWCWidth() == 100) {
             this.switchCamera(false); 
             this.mBlackScene.getXform().setSize(0,0);
             this.mHeroPoint.getXform().setSize(0,0);
             this.IsMove = true;
+            this.mClueMsg.setText("");
             this.mMsg.setText("");
             this.mPositionMsg.setText("");
 
-        }
+        //}
     }
     
     // press V to pause
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.V)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.V)) {
         if (this.mCamera.getWCWidth() < 90 ) {
             this.switchCamera(true); 
             this.mBlackScene.getXform().setSize(100,100);
@@ -1351,13 +1434,20 @@ PlayGame3.prototype.update = function () {
             this.mHeroPoint.getXform().setSize(5,5);
             this.mMsg.setText("- Click V to close - ");
             this.mMsg.setTextHeight(2);
-            this.mMsg.getXform().setPosition(78,2);
+            this.mMsg.getXform().setPosition(75,2);
             this.mPositionMsg.getXform().setPosition(this.mHero.getXform().getXPos()-5, this.mHero.getXform().getYPos()+0.8);
             this.mPositionMsg.setText("- You -");
             this.mPositionMsg.setTextHeight(2.7);
+            this.mClueMsg.setText("Lost memories:" + this.mClueNum);
+            this.mClueMsg.setTextHeight(2.5);
+            this.mClueMsg.getXform().setPosition(75, 95);
+            
             this.IsMove = false;
         }
     }
+    
+    
+   
     
     // follow the camera or not 
     if (this.mIsFollow == true) {
@@ -1382,7 +1472,7 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Caption A
-    if (this.judgeArea(67.5, 24, 2.5) && (this.mCaptionA.isRead == false)) {
+    if (this.judgeArea(68,75, 23.75, 2) && (this.mCaptionA.isRead == false)) {
         this.mCaptionA.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);
         this.IsMove = false;
@@ -1390,7 +1480,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
-
+        this.mClueNum --;
 
     }
  
@@ -1402,7 +1492,7 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Caption B
-    if (this.judgeArea(13, 28.75, 2.5) && (this.mCaptionB.isRead == false)) {
+    if (this.judgeArea(13.75, 28.75, 2) && (this.mCaptionB.isRead == false)) {
         this.mCaptionB.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1410,7 +1500,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
-
+        this.mClueNum --;
         
     }
         
@@ -1424,7 +1514,7 @@ PlayGame3.prototype.update = function () {
     
     
     // For the Caption C
-    if (this.judgeArea(13, 12.7, 2.5) && (this.mCaptionC.isRead == false)) {
+    if (this.judgeArea(13.75, 13.75, 2) && (this.mCaptionC.isRead == false)) {
         this.mCaptionC.mCaption1.getXform().setSize(120,120);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1432,7 +1522,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
-
+        this.mClueNum --;
     }
         
     
@@ -1444,7 +1534,7 @@ PlayGame3.prototype.update = function () {
     }
    
     // For the Caption D
-    if (this.judgeArea(48, 52, 2.5) && (this.mCaptionD.isRead == false)) {
+    if (this.judgeArea(48.75, 51.25, 2) && (this.mCaptionD.isRead == false)) {
         this.mCaptionD.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1452,7 +1542,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
-
+        this.mClueNum --;
     }
         
     
@@ -1464,7 +1554,7 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Caption E
-    if (this.judgeArea(35, 72, 2.5) && (this.mCaptionE.isRead == false)) {
+    if (this.judgeArea(33.75, 73.75, 2) && (this.mCaptionE.isRead == false)) {
         this.mCaptionE.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1472,7 +1562,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
-
+        this.mClueNum --;
     }
         
     
@@ -1484,7 +1574,7 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Caption F
-    if (this.judgeArea(87, 79.5, 2) && (this.mCaptionF.isRead == false)) {
+    if (this.judgeArea(88.75, 81.25, 2) && (this.mCaptionF.isRead == false)) {
         this.mCaptionF.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1493,7 +1583,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
-
+        this.mClueNum --;
     }
         
     
@@ -1505,7 +1595,7 @@ PlayGame3.prototype.update = function () {
     }
   
     // For the Caption G
-    if (this.judgeArea(67.5, 18, 2.5) && (this.mCaptionG.isRead == false)) {
+    if (this.judgeArea(66.25, 18.75, 2) && (this.mCaptionG.isRead == false)) {
         this.mCaptionG.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1513,6 +1603,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
+        this.mClueNum --;
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionG.isRead == true)) {
@@ -1523,7 +1614,7 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Caption H
-    if (this.judgeArea(87, 79.5, 2.5) && (this.mCaptionH.isRead == false)) {
+    if (this.judgeArea(86.25, 6.25, 2) && (this.mCaptionH.isRead == false)) {
         this.mCaptionH.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
@@ -1531,6 +1622,7 @@ PlayGame3.prototype.update = function () {
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
         this.mMsg.getXform().setPosition(78,2);
+        this.mClueNum --;
     }
         
     
@@ -1545,9 +1637,9 @@ PlayGame3.prototype.update = function () {
     
     
     // if meet the entrance
-    if (this.judgeArea(37.5, 52.5, 3) && (this.mEndCaption.isRead == false)) {
+    if (this.judgeArea(97.5, 55, 6) && (this.mEndCaption.isRead == false)) {
         if ((this.mCaptionA.isRead) && (this.mCaptionB.isRead) && (this.mCaptionC.isRead) && (this.mCaptionD.isRead) && (this.mCaptionE.isRead)
-                && (this.mCaptionF.isRead) && (this.mCaptionG.isRead)) {
+                && (this.mCaptionF.isRead) && (this.mCaptionG.isRead) && (this.mCaptionH.isRead)) {
             this.mEndCaption.mCaption1.getXform().setSize(100,100);
             this.switchCamera(true);    
             this.IsMove = false;
@@ -1563,10 +1655,20 @@ PlayGame3.prototype.update = function () {
    
    // When this level is finished
    if (this.mEndCaption.isRead && gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
-       this.nextScene = "Map2";
+       this.nextScene = "Map4";
        gEngine.GameLoop.stop();
    }
-   
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R)) {
+        this.nextScene = "Myself";
+        gEngine.GameLoop.stop();
+    }
+    
+    if (this.mClueNum == 4 && this.switch_music == 0) {
+        gEngine.AudioClips.stopBackgroundAudio();
+        gEngine.AudioClips.playBackgroundAudio(this.bgmusic2);
+        this.switch_music = 1;   
+    }
    
 //   // This is used to show the current mouse position.
 //    var msg = " X=" + gEngine.Input.getMousePosX()/6.3 + " Y=" + gEngine.Input.getMousePosY()/6.3;

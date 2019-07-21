@@ -38,7 +38,7 @@ StartUI.prototype.unloadScene = function () {
         gEngine.Core.startScene(new GameRuleInfo());
     } else if (this.mNextScene == "MainPage") {
         gEngine.Core.startScene(new MyGame());
-    }
+    } 
 };
 
 StartUI.prototype.initialize = function () {
@@ -136,6 +136,6 @@ StartUI.prototype.update = function () {
         var msg = " X=" + gEngine.Input.getMousePosX() + " Y=" + gEngine.Input.getMousePosY();
         this.mMsg.setText(msg);
     }
-
+  
     
 };

@@ -17,6 +17,17 @@ function PlayGame() {
     this.kBg = "assets/bg.png";
     this.logo_clue = "assets/Map1Clues/clue-blue.png";
     this.logo_item = "assets/Map1Clues/item-blue.png";
+    this.heroLogo = "assets/Map1Clues/player1.png"
+    
+    this.bgmusic = "assets/bgm/1.mp3";
+    this.bgmusic2 = "assets/bgm/2.mp3";
+    
+    this.soundbook = "assets/sound/book.mp3"
+    this.soundcard = "assets/sound/card.mp3"
+
+    this.timer = 0;
+
+
     
     this.kBgNormal = "assets/bg_normal.png";
     this.kCaption1 = "assets/Map1Clues/openWords.png";
@@ -25,6 +36,7 @@ function PlayGame() {
     this.kCaption4 = "assets/Map1Clues/clue3.png";
     this.kCaption5 = "assets/Map1Clues/clue4.png";
     this.kCaption6 = "assets/Map1Clues/endWords.png";
+    this.door = "assets/door.png";
     
     this.mCamera = null;
     this.msquare1 = null;
@@ -36,6 +48,12 @@ function PlayGame() {
     this.msquare7 = null;
     this.msquare8 = null;
     this.msquare9 = null;
+    
+    this.mBsquare1 = null;
+    this.mBsquare2 = null;
+    this.mBsquare3 = null;
+    this.mBsquare4 = null;
+    
     this.mHero = null;
     this.mItem1 = null; //加速道具
     this.mItem2 = null; //减速道具
@@ -47,7 +65,7 @@ function PlayGame() {
     this.mItem7 = null;
     this.mItem8 = null;
     
-    
+    this.chukou = null;
     this.BboxSet = null;
     
     this.mItem1BBox = null;
@@ -58,18 +76,21 @@ function PlayGame() {
     this.mItem6BBox = null;
     this.mItem7BBox = null;
     this.mItem8BBox = null;
+    this.chukouBbox = null;
     
     this.heroLight = null;
     this.heroCamera = null;
     this.mGlobalLightSet = null;
     this.mBg = null;
     
-    this.kDelta = 0.3;
+    this.kDelta = 0.18;
     this.deltaV = 0.1;
     
     
     this.mMsg = null;
     this.mPositionMsg = null;
+    this.mClueMsg = null;
+    this.mClueNum = 4;
     this.mStartCaption = null;
     this.mEndCaption = null;
     this.mStartTimer = 120;
@@ -80,7 +101,6 @@ function PlayGame() {
     this.mIsFollow = true;
     this.IsMove = true;
     this.nextScene = "";
-    
     this.mBlackScene = null;
     this.mHeroPoint = null;
     
@@ -102,6 +122,16 @@ PlayGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kCaption4);
     gEngine.Textures.loadTexture(this.kCaption5);
     gEngine.Textures.loadTexture(this.kCaption6);
+    gEngine.Textures.loadTexture(this.heroLogo);    
+    gEngine.Textures.loadTexture(this.door);
+ 
+    
+    gEngine.AudioClips.loadAudio(this.bgmusic);
+    gEngine.AudioClips.loadAudio(this.bgmusic2);
+    gEngine.AudioClips.loadAudio(this.soundbook);
+    gEngine.AudioClips.loadAudio(this.soundcard);
+
+
 //    gEngine.Textures.loadTexture(this.Caption1);
 };
 
@@ -110,10 +140,13 @@ PlayGame.prototype.unloadScene = function () {
 //    gEngine.Textures.unloadTexture(this.kBg);
 //    gEngine.Textures.unloadTexture(this.kBgNormal);
 //    gEngine.Textures.unloadTexture(this.Caption1);
-
+    gEngine.AudioClips.stopBackgroundAudio();
+    
     //    gEngine.Textures.unloadTexture(this.kLogo);
     if (this.nextScene === "Map2") {
         gEngine.Core.startScene(new PlayGame2());
+    } else if (this.nextScene === "Myself") {
+        gEngine.Core.startScene(new PlayGame());
     } else {
         gEngine.Core.startScene(new StartUI());
     }
@@ -129,6 +162,9 @@ PlayGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([1,0.98,0.85,1]);   
     gEngine.DefaultResources.setGlobalAmbientIntensity(3);
+    
+    gEngine.AudioClips.playBackgroundAudio(this.bgmusic);
+
     
     var r1 = new Renderable();
     r1.setColor([0, 0, 0, 1]);
@@ -182,8 +218,28 @@ PlayGame.prototype.initialize = function () {
     this.msquare9.getXform().setPosition(5, 95);
     this.msquare9.getXform().setSize(10, 10);
     this.msquare9.setColor([1, 0, 0, 1]);
+    
+    this.mBsquare1 = new Renderable();
+    this.mBsquare1.getXform().setPosition(-100, 50);
+    this.mBsquare1.getXform().setSize(200, 200);
+    this.mBsquare1.setColor([0, 0, 0, 1]);
+    
+    this.mBsquare2 = new Renderable();
+    this.mBsquare2.getXform().setPosition(200, 50);
+    this.mBsquare2.getXform().setSize(200, 200);
+    this.mBsquare2.setColor([0, 0, 0, 1]);
+    
+    this.mBsquare3 = new Renderable();
+    this.mBsquare3.getXform().setPosition(50, 125);
+    this.mBsquare3.getXform().setSize(100, 50);
+    this.mBsquare3.setColor([0, 0, 0, 1]);
+    
+    this.mBsquare4 = new Renderable();
+    this.mBsquare4.getXform().setPosition(50, -25);
+    this.mBsquare4.getXform().setSize(100, 50);
+    this.mBsquare4.setColor([0, 0, 0, 1]);
 
-    this.mHero = new Hero(this.logo1);
+    this.mHero = new Hero(this.heroLogo);
     
     //道具1
     this.mItem1 = new Item(this.logo_item);
@@ -218,6 +274,13 @@ PlayGame.prototype.initialize = function () {
     this.mItem8.getXform().setXPos(85);
     this.mItem8.getXform().setYPos(95);
     
+    this.chukou = new Item(this.door);
+    this.chukou.getXform().setXPos(94.5);
+    this.chukou.getXform().setYPos(34.8);
+    this.chukou.getXform().setSize(3,3);
+    
+    this.chukouBbox = this.chukou.getBBox();
+    
     var sq1Bbox = this.msquare1.getBBox();
     var sq2Bbox = this.msquare2.getBBox();
     var sq3Bbox = this.msquare3.getBBox();
@@ -246,6 +309,11 @@ PlayGame.prototype.initialize = function () {
     this.mPositionMsg.setColor([1, 1, 1, 1]);
     this.mPositionMsg.getXform().setPosition(0, 0);
     this.mPositionMsg.setTextHeight(4);
+
+    this.mClueMsg = new FontRenderable("");
+    this.mClueMsg.setColor([0.97, 0.952, 0.8196, 1]);
+    this.mClueMsg.getXform().setPosition(75, 75);
+    this.mClueMsg.setTextHeight(3);
      
     // 光效
     this._initializeLights(this.mHero.getXform().getPosition());
@@ -403,6 +471,11 @@ PlayGame.prototype.draw = function () {
     this.msquare7.draw(this.mCamera);
     this.msquare8.draw(this.mCamera);
     
+    this.mBsquare1.draw(this.mCamera);
+    this.mBsquare2.draw(this.mCamera);
+    this.mBsquare3.draw(this.mCamera);
+    this.mBsquare4.draw(this.mCamera);
+    
     this.mHero.draw(this.mCamera);
     this.mItem1.draw(this.mCamera);
     this.mItem2.draw(this.mCamera); 
@@ -412,6 +485,8 @@ PlayGame.prototype.draw = function () {
     this.mItem6.draw(this.mCamera);
     this.mItem7.draw(this.mCamera);
     this.mItem8.draw(this.mCamera);
+    
+    this.chukou.draw(this.mCamera);
     
     this.mStartCaption.draw(this.mCamera);
     this.mCaptionA.draw(this.mCamera);
@@ -424,6 +499,7 @@ PlayGame.prototype.draw = function () {
     
     this.mMsg.draw(this.mCamera);
     this.mPositionMsg.draw(this.mCamera);
+    this.mClueMsg.draw(this.mCamera);
     
 };
 
@@ -461,7 +537,7 @@ PlayGame.prototype.update = function () {
     this.mCamera.update();
     this.mHero.update();
     //this.mBg.update();
-    
+    this.timer += 1;
     
 //    this.mMsg.setText(this.kDelta);
 
@@ -488,7 +564,8 @@ PlayGame.prototype.update = function () {
                     hBbox.intersectsBound(sq5Bbox) ||
                     hBbox.intersectsBound(sq6Bbox) ||
                     hBbox.intersectsBound(sq7Bbox) ||
-                    hBbox.intersectsBound(sq8Bbox) 
+                    hBbox.intersectsBound(sq8Bbox) ||
+                    hBbox.intersectsBound(this.chukouBbox) 
                     ){
                 xform.incYPosBy(-this.kDelta);      
             }
@@ -521,7 +598,8 @@ PlayGame.prototype.update = function () {
                     hBbox.intersectsBound(sq5Bbox) ||
                     hBbox.intersectsBound(sq6Bbox) ||
                     hBbox.intersectsBound(sq7Bbox) ||
-                    hBbox.intersectsBound(sq8Bbox) 
+                    hBbox.intersectsBound(sq8Bbox) ||
+                    hBbox.intersectsBound(this.chukouBbox)
                     ){
                 xform.incYPosBy(this.kDelta);     
             }
@@ -554,7 +632,8 @@ PlayGame.prototype.update = function () {
                     hBbox.intersectsBound(sq5Bbox) ||
                     hBbox.intersectsBound(sq6Bbox) ||
                     hBbox.intersectsBound(sq7Bbox) ||
-                    hBbox.intersectsBound(sq8Bbox) 
+                    hBbox.intersectsBound(sq8Bbox) ||
+                    hBbox.intersectsBound(this.chukouBbox)
                     ){
                 xform.incXPosBy(this.kDelta);     
             }
@@ -586,7 +665,8 @@ PlayGame.prototype.update = function () {
                     hBbox.intersectsBound(sq5Bbox) ||
                     hBbox.intersectsBound(sq6Bbox) ||
                     hBbox.intersectsBound(sq7Bbox) ||
-                    hBbox.intersectsBound(sq8Bbox) 
+                    hBbox.intersectsBound(sq8Bbox) ||
+                    hBbox.intersectsBound(this.chukouBbox)
                     ){
                 xform.incXPosBy(-this.kDelta);     
             }
@@ -608,12 +688,91 @@ PlayGame.prototype.update = function () {
         this.mItem1BBox = this.mItem1.getBBox();
     }
     //道具二：减速
-    if(hBbox.intersectsBound(this.mItem2BBox) || gEngine.Input.isKeyPressed(gEngine.Input.keys.I)){
-        this.kDelta = 0.1;
-        this.mItem2.getXform().setXPos(-100);
-        this.mItem2.getXform().setYPos(-100);
-        this.mItem2BBox = this.mItem2.getBBox();
+    
+    if(this.timer > 15){
+        
+        if(hBbox.intersectsBound(this.mItem1BBox)){
+            this.timer = 0
+            this.mItem1.getXform().setXPos(-100);
+            this.mItem1.getXform().setYPos(-100);
+            this.mItem1BBox = this.mItem1.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundcard);
+            this.kDelta = 0.1;           
+        }
+        
+        if(hBbox.intersectsBound(this.mItem2BBox)){
+            this.timer = 0
+            this.mItem2.getXform().setXPos(-100);
+            this.mItem2.getXform().setYPos(-100);
+            this.mItem2BBox = this.mItem2.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundcard);
+            this.kDelta = 0.1;           
+        } 
+        
+        if(hBbox.intersectsBound(this.mItem3BBox)){
+            this.timer = 0
+            this.mItem3.getXform().setXPos(-100);
+            this.mItem3.getXform().setYPos(-100);
+            this.mItem3BBox = this.mItem3.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundcard);
+            this.kDelta = 0.1;           
+        } 
+        
+        if(hBbox.intersectsBound(this.mItem4BBox)){
+            this.timer = 0
+            this.mItem4.getXform().setXPos(-100);
+            this.mItem4.getXform().setYPos(-100);
+            this.mItem4BBox = this.mItem4.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundcard);
+            this.kDelta = 0.1;           
+        } 
+        
+        if(hBbox.intersectsBound(this.mItem5BBox)){
+            this.timer = 0
+            this.mItem5.getXform().setXPos(-100);
+            this.mItem5.getXform().setYPos(-100);
+            this.mItem5BBox = this.mItem5.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundbook);
+            this.kDelta = 0.1;           
+        } 
+        
+        if(hBbox.intersectsBound(this.mItem6BBox)){
+            this.timer = 0
+            this.mItem6.getXform().setXPos(-100);
+            this.mItem6.getXform().setYPos(-100);
+            this.mItem6BBox = this.mItem6.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundbook);
+            this.kDelta = 0.1;           
+        } 
+        
+        if(hBbox.intersectsBound(this.mItem7BBox)){
+            this.timer = 0
+            this.mItem7.getXform().setXPos(-100);
+            this.mItem7.getXform().setYPos(-100);
+            this.mItem7BBox = this.mItem7.getBBox(); 
+            gEngine.AudioClips.playBackgroundAudio(this.bgmusic2);
+            gEngine.AudioClips.playACue(this.soundbook);
+            this.kDelta = 0.1;           
+        }
+        
+        
+        if(hBbox.intersectsBound(this.mItem8BBox)){
+            this.timer = 0
+            this.mItem8.getXform().setXPos(-100);
+            this.mItem8.getXform().setYPos(-100);
+            this.mItem8BBox = this.mItem8.getBBox(); 
+            gEngine.AudioClips.playACue(this.soundbook);
+            this.kDelta = 0.1;           
+        }
+        
     }
+//    if(hBbox.intersectsBound(this.mItem2BBox) || gEngine.Input.isKeyPressed(gEngine.Input.keys.I)){
+//        gEngine.AudioClips.playACue(this.soundbook);
+//        this.kDelta = 0.1;
+//        this.mItem2.getXform().setXPos(-100);
+//        this.mItem2.getXform().setYPos(-100);
+//        this.mItem2BBox = this.mItem2.getBBox();
+//    }
     
     if(hBbox.intersectsBound(this.mItem3BBox) || gEngine.Input.isKeyPressed(gEngine.Input.keys.O)){
         this.mGlobalLightSet.getLightAt(0).setIntensity(7);
@@ -662,6 +821,8 @@ PlayGame.prototype.update = function () {
         this.mItem7.getXform().setXPos(-100);
         this.mItem7.getXform().setYPos(-100);
         this.mItem7BBox = this.mItem7.getBBox();
+        gEngine.AudioClips.stopBackgroundAudio();
+        gEngine.AudioClips.playBackgroundAudio(this.bgmusic2);
     }
     
     if(hBbox.intersectsBound(this.mItem8BBox)){
@@ -685,20 +846,21 @@ PlayGame.prototype.update = function () {
     
     
     // press V to follow
-    if (gEngine.Input.isKeyReleased(gEngine.Input.keys.V)) { 
-        if (this.mCamera.getWCWidth() == 100) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.V)) { 
+        //if (this.mCamera.getWCWidth() == 100) {
             this.switchCamera(false); 
             this.mBlackScene.getXform().setSize(0,0);
             this.mHeroPoint.getXform().setSize(0,0);
             this.IsMove = true;
+            this.mClueMsg.setText("");
             this.mMsg.setText("");
             this.mPositionMsg.setText("");
 
-        }
+        //}
     }
     
     // press V to pause
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.V)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.V)) {
         if (this.mCamera.getWCWidth() < 90 ) {
             this.switchCamera(true); 
             this.mBlackScene.getXform().setSize(100,100);
@@ -706,10 +868,14 @@ PlayGame.prototype.update = function () {
             this.mHeroPoint.getXform().setSize(5,5);
             this.mMsg.setText("- Click V to close - ");
             this.mMsg.setTextHeight(2);
-            this.mMsg.getXform().setPosition(80,2);
+            this.mMsg.getXform().setPosition(75,2);
             this.mPositionMsg.getXform().setPosition(this.mHero.getXform().getXPos()-5, this.mHero.getXform().getYPos()+0.8);
             this.mPositionMsg.setText("- You -");
             this.mPositionMsg.setTextHeight(2.7);
+            this.mClueMsg.setText("Lost memories:" + this.mClueNum);
+            this.mClueMsg.setTextHeight(2.5);
+            this.mClueMsg.getXform().setPosition(75, 95);
+            
             this.IsMove = false;
         }
     }
@@ -742,6 +908,7 @@ PlayGame.prototype.update = function () {
         this.switchCamera(true);
         this.IsMove = false;
         this.mCaptionA.isRead = true;
+        this.mClueNum --;
         this.mMsg.getXform().setPosition(75, 2);
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
@@ -755,11 +922,12 @@ PlayGame.prototype.update = function () {
     }
     
     // For the Caption B
-    if (this.judgeArea(55, 65, 3) && (this.mCaptionB.isRead == false)) {
+    if (this.judgeArea(55, 65, 2) && (this.mCaptionB.isRead == false)) {
         this.mCaptionB.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionB.isRead = true;
+        this.mClueNum--;
         this.mMsg.getXform().setPosition(75, 2);
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
@@ -773,11 +941,12 @@ PlayGame.prototype.update = function () {
     }
     
     // For the Caption C
-    if (this.judgeArea(55, 95, 3) && (this.mCaptionC.isRead == false)) {
+    if (this.judgeArea(55, 95, 2) && (this.mCaptionC.isRead == false)) {
         this.mCaptionC.mCaption1.getXform().setSize(120,120);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionC.isRead = true;
+        this.mClueNum--;
         this.mMsg.getXform().setPosition(75, 2);
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
@@ -791,11 +960,12 @@ PlayGame.prototype.update = function () {
     }
     
     // For the Caption D
-    if (this.judgeArea(85, 95, 3) && (this.mCaptionD.isRead == false)) {
+    if (this.judgeArea(85, 95, 2) && (this.mCaptionD.isRead == false)) {
         this.mCaptionD.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionD.isRead = true;
+        this.mClueNum--;
         this.mMsg.getXform().setPosition(75, 2);
         this.mMsg.setText("- Click B to close - ");
         this.mMsg.setTextHeight(2);
@@ -810,7 +980,7 @@ PlayGame.prototype.update = function () {
     
     
     // if meet the entrance
-    if (this.judgeArea(95.5, 35.5, 5) && (this.mEndCaption.isRead == false)) {
+    if (this.judgeArea(94.5, 35.5, 4) && (this.mEndCaption.isRead == false)) {
         if ( (this.mCaptionB.isRead) && (this.mCaptionC.isRead) && (this.mCaptionD.isRead)) {
             this.mEndCaption.mCaption1.getXform().setSize(100,100);
             this.switchCamera(true);    
@@ -831,6 +1001,11 @@ PlayGame.prototype.update = function () {
        gEngine.GameLoop.stop();
    }
    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R)) {
+        this.nextScene = "Myself";
+        gEngine.GameLoop.stop();
+    }
+    
 //   
 //   // This is used to show the current mouse position.
 //    var msg = " X=" + gEngine.Input.getMousePosX()/6.3 + " Y=" + gEngine.Input.getMousePosY()/6.3;
