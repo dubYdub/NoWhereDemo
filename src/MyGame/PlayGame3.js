@@ -823,8 +823,8 @@ PlayGame3.prototype.draw = function () {
     this.msquare15.draw(this.mCamera);
     this.msquare16.draw(this.mCamera);
     this.msquare17.draw(this.mCamera);
-    // this.msquare18.draw(this.mCamera);
-    // this.msquare19.draw(this.mCamera);
+    this.msquare18.draw(this.mCamera);
+    this.msquare19.draw(this.mCamera);
     this.msquare20.draw(this.mCamera);
     this.msquare21.draw(this.mCamera);
     this.msquare22.draw(this.mCamera);
@@ -891,8 +891,8 @@ PlayGame3.prototype.draw = function () {
     this.mItem15.draw(this.mCamera);
     this.mItem16.draw(this.mCamera);
     this.mItem17.draw(this.mCamera);
-    this.mItem18.draw(this.mCamera);
-    this.mItem19.draw(this.mCamera);
+//     this.mItem18.draw(this.mCamera);
+//     this.mItem19.draw(this.mCamera);
     this.mItem20.draw(this.mCamera);
     
     this.mStartCaption.draw(this.mCamera);
