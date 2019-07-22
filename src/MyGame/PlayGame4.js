@@ -1212,22 +1212,22 @@ PlayGame4.prototype.update = function () {
    
     var hBbox = this.mHero.getBBox();
     if(hBbox.intersectsBound(this.mItem1BBox)){
-        this.mItem1.getXform().setXPos(-1);
-        this.mItem1.getXform().setYPos(-1);
+        this.mItem1.getXform().setXPos(-100);
+        this.mItem1.getXform().setYPos(-100);
         this.mItem1BBox = this.mItem1.getBBox();
     }
    
     if(hBbox.intersectsBound(this.mItem2BBox)){
-        this.mItem2.getXform().setXPos(-1);
-        this.mItem2.getXform().setYPos(-1);
+        this.mItem2.getXform().setXPos(-100);
+        this.mItem2.getXform().setYPos(-100);
         this.mItem2BBox = this.mItem2.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem3BBox)){
 //        this.mGlobalLightSet.getLightAt(0).setIntensity(7);
 //        this.mGlobalLightSet.getLightAt(0).setFar(15);
-        this.mItem3.getXform().setXPos(-1);
-        this.mItem3.getXform().setYPos(-1);
+        this.mItem3.getXform().setXPos(-100);
+        this.mItem3.getXform().setYPos(-100);
         this.mItem3BBox = this.mItem3.getBBox();
     }
     
@@ -1235,19 +1235,29 @@ PlayGame4.prototype.update = function () {
 //        this.mGlobalLightSet.getLightAt(0).setIntensity(3);
 //        this.mGlobalLightSet.getLightAt(0).setNear(3)
 //        this.mGlobalLightSet.getLightAt(0).setFar(8);
-        this.mItem4.getXform().setXPos(-1);
-        this.mItem4.getXform().setYPos(-1);
+        this.mItem4.getXform().setXPos(-100);
+        this.mItem4.getXform().setYPos(-100);
         this.mItem4BBox = this.mItem4.getBBox();
     }
     
-
-    if(hBbox.intersectsBound(this.mItem4BBox)){
+    if(hBbox.intersectsBound(this.mItem5BBox)){
 //        this.mGlobalLightSet.getLightAt(0).setIntensity(3);
 //        this.mGlobalLightSet.getLightAt(0).setNear(3)
 //        this.mGlobalLightSet.getLightAt(0).setFar(8);
-        this.mItem5.getXform().setXPos(-1);
-        this.mItem5.getXform().setYPos(-1);
+        this.mItem5.getXform().setXPos(-100);
+        this.mItem5.getXform().setYPos(-100);
         this.mItem5BBox = this.mItem5.getBBox();
+    }
+
+
+    
+    if(hBbox.intersectsBound(this.mItem6BBox)){
+//        this.mGlobalLightSet.getLightAt(0).setIntensity(3);
+//        this.mGlobalLightSet.getLightAt(0).setNear(3)
+//        this.mGlobalLightSet.getLightAt(0).setFar(8);
+        this.mItem6.getXform().setXPos(-100);
+        this.mItem6.getXform().setYPos(-100);
+        this.mItem6BBox = this.mItem6.getBBox();
     }
 
 
