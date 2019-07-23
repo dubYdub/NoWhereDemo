@@ -47,6 +47,11 @@ function PlayGame2() {
     this.trans6 = "assets/trans-red.png";
     this.trans7 = "assets/trans-yellow.png";
     
+    this.cjudge = false;
+    this.djudge = false;
+    this.ejudge = false;
+    this.fjudge = false;
+    this.gjudge = false;
     
     this.mCamera = null;
     this.msquare1 = null;
@@ -1346,7 +1351,7 @@ PlayGame2.prototype.update = function () {
             this.mPositionMsg.setTextHeight(2);
             this.mClueMsg.setText("- Lost memories:" + this.mClueNum + " -");
             this.mClueMsg.setTextHeight(2.2);
-            this.mClueMsg.getXform().setPosition(5, 98);
+            this.mClueMsg.getXform().setPosition(4, 98);
          
             // For everywhere
             if (this.foundEntrance) {
@@ -1433,122 +1438,503 @@ PlayGame2.prototype.update = function () {
     
     
     // For the Caption C
-    if (this.judgeArea(50, 52.5, 1.8) && (this.mCaptionC.isRead == false)) {
-        this.mCaptionC.mCaption1.getXform().setSize(120,120);
-        this.switchCamera(true);    
-        this.IsMove = false;
-        this.mCaptionC.isRead = true;
-        this.mMsg.setText("- Click Enter to close - ");
-        this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(70,2);
-        this.mClueNum --;
-        this.addColor();
-        this.itemPoint3.isFound = true;
-        gEngine.AudioClips.playACue(this.soundbook);
+    if (this.judgeArea(50, 52.5, 1.8)) {
+        if(this.mClueNum === 5 && this.cjudge === false){
+            this.mCaptionC.mCaption1.getXform().setSize(120,120);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionC.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint3.isFound = true;
+            this.cjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 4 && this.cjudge === false){
+            this.mCaptionD.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionD.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();        
+            this.itemPoint4.isFound = true;
+            this.cjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 3 && this.cjudge === false){
+            this.mCaptionE.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionE.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint5.isFound = true;
+            this.cjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 2 && this.cjudge === false){
+            this.mCaptionF.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionF.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint6.isFound = true;
+            this.cjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 1 && this.cjudge === false){
+            this.mCaptionG.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionG.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint7.isFound = true;
+            this.cjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionC.isRead == true)) {
-        this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
-        this.switchCamera(false); 
-        this.IsMove = true;
-        this.mMsg.setText("");
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
+        if(this.mClueNum === 4 && (this.mCaptionC.isRead === true)){
+            this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 3 && (this.mCaptionD.isRead === true)){
+            this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 2 && (this.mCaptionE.isRead === true)){
+            this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 1 && (this.mCaptionF.isRead === true)){
+            this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 0 && (this.mCaptionG.isRead === true)){
+            this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }            
     }
    
     // For the Caption D
-    if (this.judgeArea(2.5, 95, 1.8) && (this.mCaptionD.isRead == false)) {
-        this.mCaptionD.mCaption1.getXform().setSize(100,100);
-        this.switchCamera(true);    
-        this.IsMove = false;
-        this.mCaptionD.isRead = true;
-        this.mMsg.setText("- Click Enter to close - ");
-        this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(70,2);
-        this.mClueNum --;
-        this.addColor();        
-        this.itemPoint4.isFound = true;
-        gEngine.AudioClips.playACue(this.soundbook);
-
-
+    if (this.judgeArea(2.5, 95, 1.8)) {
+        if(this.mClueNum === 5 && this.djudge === false){
+            this.mCaptionC.mCaption1.getXform().setSize(120,120);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionC.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint3.isFound = true;
+            this.djudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 4 && this.djudge === false){
+            this.mCaptionD.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionD.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();        
+            this.itemPoint4.isFound = true;
+            this.djudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 3 && this.djudge === false){
+            this.mCaptionE.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionE.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint5.isFound = true;
+            this.djudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 2 && this.djudge === false){
+            this.mCaptionF.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionF.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint6.isFound = true;
+            this.djudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 1 && this.djudge === false){
+            this.mCaptionG.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionG.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint7.isFound = true;
+            this.djudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionD.isRead == true)) {
-        this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
-        this.switchCamera(false); 
-        this.IsMove = true; 
-        this.mMsg.setText("");
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
+       if(this.mClueNum === 4 && (this.mCaptionC.isRead === true)){
+            this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 3 && (this.mCaptionD.isRead === true)){
+            this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 2 && (this.mCaptionE.isRead === true)){
+            this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 1 && (this.mCaptionF.isRead === true)){
+            this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 0 && (this.mCaptionG.isRead === true)){
+            this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }
     }
     
     // For the Caption E 6
-    if (this.judgeArea(12.5, 52.5, 1.8) && (this.mCaptionE.isRead == false)) {
-        this.mCaptionE.mCaption1.getXform().setSize(100,100);
-        this.switchCamera(true);    
-        this.IsMove = false;
-        this.mCaptionE.isRead = true;
-        this.mMsg.setText("- Click Enter to close - ");
-        this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(70,2);
-        this.mClueNum --;
-        this.addColor();
-        this.itemPoint5.isFound = true;
-
-        gEngine.AudioClips.playACue(this.soundbook);
+    if (this.judgeArea(12.5, 52.5, 1.8)) {
+        if(this.mClueNum === 5 && this.ejudge === false){
+            this.mCaptionC.mCaption1.getXform().setSize(120,120);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionC.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint3.isFound = true;
+            this.ejudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 4 && this.ejudge === false){
+            this.mCaptionD.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionD.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();        
+            this.itemPoint4.isFound = true;
+            this.ejudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 3 && this.ejudge === false){
+            this.mCaptionE.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionE.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint5.isFound = true;
+            this.ejudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 2 && this.ejudge === false){
+            this.mCaptionF.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionF.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint6.isFound = true;
+            this.ejudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 1 && this.ejudge === false){
+            this.mCaptionG.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionG.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint7.isFound = true;
+            this.ejudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionE.isRead == true)) {
-        this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
-        this.switchCamera(false); 
-        this.IsMove = true; 
-        this.mMsg.setText("");
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
+        if(this.mClueNum === 4 && (this.mCaptionC.isRead === true)){
+            this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 3 && (this.mCaptionD.isRead === true)){
+            this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 2 && (this.mCaptionE.isRead === true)){
+            this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 1 && (this.mCaptionF.isRead === true)){
+            this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 0 && (this.mCaptionG.isRead === true)){
+            this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }
     }
     
     // For the Caption F
-    if (this.judgeArea(17.5, 12.5, 1.8) && (this.mCaptionF.isRead == false)) {
-        this.mCaptionF.mCaption1.getXform().setSize(100,100);
-        this.switchCamera(true);    
-        this.IsMove = false;
-        this.mCaptionF.isRead = true;
-
-        this.mMsg.setText("- Click Enter to close - ");
-        this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(70,2);
-        this.mClueNum --;
-        this.addColor();
-        this.itemPoint6.isFound = true;
-        gEngine.AudioClips.playACue(this.soundbook);
+    if (this.judgeArea(17.5, 12.5, 1.8)) {
+        if(this.mClueNum === 5 && this.fjudge === false){
+            this.mCaptionC.mCaption1.getXform().setSize(120,120);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionC.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint3.isFound = true;
+            this.fjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 4 && this.fjudge === false){
+            this.mCaptionD.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionD.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();        
+            this.itemPoint4.isFound = true;
+            this.fjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 3 && this.fjudge === false){
+            this.mCaptionE.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionE.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint5.isFound = true;
+            this.fjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 2 && this.fjudge === false){
+            this.mCaptionF.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionF.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint6.isFound = true;
+            this.fjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 1 && this.fjudge === false){
+            this.mCaptionG.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionG.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint7.isFound = true;
+            this.fjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionF.isRead == true)) {
-        this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
-        this.switchCamera(false); 
-        this.IsMove = true;
-        this.mMsg.setText("");
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
+        if(this.mClueNum === 4 && (this.mCaptionC.isRead === true)){
+            this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 3 && (this.mCaptionD.isRead === true)){
+            this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 2 && (this.mCaptionE.isRead === true)){
+            this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 1 && (this.mCaptionF.isRead === true)){
+            this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 0 && (this.mCaptionG.isRead === true)){
+            this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }
     }
   
     // For the Caption G
-    if (this.judgeArea(65, 48.75, 1.8) && (this.mCaptionG.isRead == false)) {
-        this.mCaptionG.mCaption1.getXform().setSize(100,100);
-        this.switchCamera(true);    
-        this.IsMove = false;
-        this.mCaptionG.isRead = true;
-        this.mMsg.setText("- Click Enter to close - ");
-        this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(70,2);
-        this.mClueNum --;
-        this.addColor();
-        this.itemPoint7.isFound = true;
-        gEngine.AudioClips.playACue(this.soundbook);
+    if (this.judgeArea(65, 48.75, 1.8)) {
+        if(this.mClueNum === 5 && this.gjudge === false){
+            this.mCaptionC.mCaption1.getXform().setSize(120,120);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionC.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint3.isFound = true;
+            this.gjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 4 && this.gjudge === false){
+            this.mCaptionD.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionD.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();        
+            this.itemPoint4.isFound = true;
+            this.gjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 3 && this.gjudge === false){
+            this.mCaptionE.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionE.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint5.isFound = true;
+            this.gjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 2 && this.gjudge === false){
+            this.mCaptionF.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionF.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint6.isFound = true;
+            this.gjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }else if(this.mClueNum === 1 && this.gjudge === false){
+            this.mCaptionG.mCaption1.getXform().setSize(100,100);
+            this.switchCamera(true);    
+            this.IsMove = false;
+            this.mCaptionG.isRead = true;
+            this.mMsg.setText("- Click Enter to close - ");
+            this.mMsg.setTextHeight(2);
+            this.mMsg.getXform().setPosition(70,2);
+            this.mClueNum --;
+            this.addColor();
+            this.itemPoint7.isFound = true;
+            this.gjudge = true;
+            gEngine.AudioClips.playACue(this.soundbook);
+        }
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionG.isRead == true)) {
-        this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
-        this.switchCamera(false); 
-        this.IsMove = true; 
-        this.mMsg.setText("");
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter)) {
+        if(this.mClueNum === 4 && (this.mCaptionC.isRead === true)){
+            this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 3 && (this.mCaptionD.isRead === true)){
+            this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 2 && (this.mCaptionE.isRead === true)){
+            this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 1 && (this.mCaptionF.isRead === true)){
+            this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }else if(this.mClueNum === 0 && (this.mCaptionG.isRead === true)){
+            this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
+            this.switchCamera(false); 
+            this.IsMove = true;
+            this.mMsg.setText(""); 
+        }
     }
   
 
