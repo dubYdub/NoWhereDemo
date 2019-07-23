@@ -505,7 +505,7 @@ PlayGame2.prototype.initialize = function () {
     this.mItem11.getXform().setSize(7,7);
     
     this.mItem12 = new Item(this.trans2);
-    this.mItem12.getXform().setXPos(72.5);
+    this.mItem12.getXform().setXPos(71.25);
     this.mItem12.getXform().setYPos(46.25);
     //this.mItem12.getXform().setSize(3.75, 3.75);
     this.mItem12.getXform().setSize(7,7);
@@ -1267,7 +1267,7 @@ PlayGame2.prototype.update = function () {
 //        }
 //    }
     
-    if (this.judgeArea(72.5, 46.25, 1.2)) {
+    if (this.judgeArea(71.25, 46.25, 1.2)) {
         this.IsMove = false;
         this.timer += 1;
         if(size[0] >= 0.1){
@@ -1281,7 +1281,7 @@ PlayGame2.prototype.update = function () {
                 this.mHero.getXform().setSize(orix, oriy);
                 this.mHeroBBox = this.mHero.getBBox();
             }          
-        }else if(this.judgeArea(72.5, 46.25, 1.2) && (size[0] < 0.10)){
+        }else if(this.judgeArea(71.25, 46.25, 1.2) && (size[0] < 0.10)){
             //this.IsMove = true;
             this.timer = 0;
             this.mHero.getXform().setXPos(50);
