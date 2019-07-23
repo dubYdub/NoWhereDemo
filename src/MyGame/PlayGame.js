@@ -862,11 +862,11 @@ PlayGame.prototype.update = function () {
             this.mPositionMsg.setTextHeight(2);
             this.mClueMsg.setText("- Lost memories:" + this.mClueNum + " -");
             this.mClueMsg.setTextHeight(2.2);
-            this.mClueMsg.getXform().setPosition(4, 2);
+            this.mClueMsg.getXform().setPosition(4, 98);
             
             // For everywhere
             if (this.foundEntrance) {
-                this.mEverywhereMsg.setText("Entrance");
+                this.mEverywhereMsg.setText("Exit");
                 this.mEverywhereMsg.getXform().setPosition(91, 32);
                 this.mEverywhereMsg.setTextHeight(2);
                 this.mEverywhere.getXform().setPosition(95,35);
