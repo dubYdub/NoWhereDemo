@@ -1527,8 +1527,7 @@ PlayGame3.prototype.update = function () {
      
     
 //    if(hBbox.intersectsBound(this.mItem10BBox)){ 
-//        this.mHero.getXform().setSize(
-  , 1.5);        
+//        this.mHero.getXform().setSize(, 1.5);        
 //    }
     
     //var size = this.mHero.getXform().getSize();
