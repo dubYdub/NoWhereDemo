@@ -15,12 +15,13 @@ function PlayGame3() {
     // The camera to view the scene
     this.logo1 = "assets/Map3Clues/black.png"
     this.heroLogo = "assets/Map3Clues/play3.png"
-    this.logo_item = "assets/Map3Clues/item-red.png"
+    this.logo_item = "assets/Msize.png"
     this.logo_clue = "assets/Map3Clues/clue-red.png"
     this.kBg = "assets/bg.png";
     
-    this.bgmusic = "assets/bgm/4.mp3";
-    this.bgmusic2 = "assets/bgm/5.mp3";
+    this.bgmusic = "assets/bgm/NO3-start-5.mp3";
+    this.bgmusic2 = "assets/bgm/NO3-6-end.mp3";
+    this.soundbook = "assets/sound/book.mp3"
     this.door = "assets/door.png";
 
     this.kBgNormal = "assets/bg_normal.png";
@@ -36,13 +37,13 @@ function PlayGame3() {
     this.kCaption10 = "assets/Map3Clues/clue9.png";
     this.kCaption11 = "assets/Map3Clues/endWords.png";
     
-    this.trans1 = "assets/Map4Clues/trans-blue.png";
-    this.trans2 = "assets/Map4Clues/trans-green.png";
-    this.trans3 = "assets/Map4Clues/trans-grey.png";
-    this.trans4 = "assets/Map4Clues/trans-orange.png";
-    this.trans5 = "assets/Map4Clues/trans-purple.png";
-    this.trans6 = "assets/Map4Clues/trans-red.png";
-    this.trans7 = "assets/Map4Clues/trans-yellow.png";
+    this.trans1 = "assets/trans-blue.png";
+    this.trans2 = "assets/trans-green.png";
+    this.trans3 = "assets/trans-grey.png";
+    this.trans4 = "assets/trans-orange.png";
+    this.trans5 = "assets/trans-purple.png";
+    this.trans6 = "assets/trans-red.png";
+    this.trans7 = "assets/trans-yellow.png";
     
     this.mCamera = null;
     this.msquare1 = null;
@@ -135,6 +136,15 @@ function PlayGame3() {
     this.mItem19 = null;
     this.mItem20 = null;
     
+    this.itemPoint1 = null;
+    this.itemPoint2 = null;
+    this.itemPoint3 = null;
+    this.itemPoint4 = null;
+    this.itemPoint5 = null;
+    this.itemPoint6 = null;
+    this.itemPoint7 = null;
+    this.itemPoint8 = null;
+    
     this.mItem1BBox = null;
     this.mItem2BBox = null;
     this.mItem3BBox = null;
@@ -169,7 +179,8 @@ function PlayGame3() {
     this.mMsg = null;
     this.mPositionMsg = null;
     this.mClueMsg = null;
-    this.mClueNum = 8;
+    this.mEverywhereMsg;
+    this.mClueNum = 9;
     this.mStartCaption = null;
     this.mEndCaption = null;
     this.mStartTimer = 120;
@@ -185,9 +196,13 @@ function PlayGame3() {
     this.mIsFollow = true;
     this.IsMove = true;
     this.nextScene = "";
+    this.timer = 0;
+    this.sDelta = 0.05;
     
     this.mBlackScene = null;
     this.mHeroPoint = null;
+    this.mEverywhere = null;
+    this.foundEntrance = false;
     
     this.switch_music = 0;
 }
@@ -226,6 +241,7 @@ PlayGame3.prototype.loadScene = function () {
     
     gEngine.AudioClips.loadAudio(this.bgmusic);    
     gEngine.AudioClips.loadAudio(this.bgmusic2);
+    gEngine.AudioClips.loadAudio(this.soundbook);
 
 //    gEngine.Textures.loadTexture(this.Caption1);
 };
@@ -624,40 +640,60 @@ PlayGame3.prototype.initialize = function () {
     this.mItem8.getXform().setYPos(6.25);
     
     this.mItem9 = new Item(this.trans1);
-    this.mItem9.getXform().setXPos(13.75);
-    this.mItem9.getXform().setYPos(83.75);
+//    this.mItem9.getXform().setXPos(12.5);
+//    this.mItem9.getXform().setYPos(85);
+    this.mItem9.getXform().setXPos(-100);
+    this.mItem9.getXform().setYPos(-100);
+    this.mItem9.getXform().setSize(5,5);
     
     this.mItem10 = new Item(this.logo_item);
     this.mItem10.getXform().setXPos(11.25);
     this.mItem10.getXform().setYPos(71.25);
     
     this.mItem11 = new Item(this.trans2);
-    this.mItem11.getXform().setXPos(21.25);
-    this.mItem11.getXform().setYPos(6.25);
+//    this.mItem11.getXform().setXPos(20);
+//    this.mItem11.getXform().setYPos(7.5);
+    this.mItem11.getXform().setXPos(-100);
+    this.mItem11.getXform().setYPos(-100);
+    this.mItem11.getXform().setSize(5,5);
     
     this.mItem12 = new Item(this.trans3);
-    this.mItem12.getXform().setXPos(48.75);
-    this.mItem12.getXform().setYPos(46.25);
+//    this.mItem12.getXform().setXPos(47.5);
+//    this.mItem12.getXform().setYPos(45);
+    this.mItem12.getXform().setXPos(-100);
+    this.mItem12.getXform().setYPos(-100);
+    this.mItem12.getXform().setSize(5,5);
     
     this.mItem13 = new Item(this.logo_item);
     this.mItem13.getXform().setXPos(53.75);
     this.mItem13.getXform().setYPos(36.25);
     
     this.mItem14 = new Item(this.trans4);
-    this.mItem14.getXform().setXPos(58.75);
-    this.mItem14.getXform().setYPos(43.75);
+    this.mItem14.getXform().setXPos(57.5);
+    this.mItem14.getXform().setYPos(45);
+    this.mItem14.getXform().setSize(5,5);
+
     
     this.mItem15 = new Item(this.trans5);
-    this.mItem15.getXform().setXPos(93.75);
-    this.mItem15.getXform().setYPos(18.75);
+//    this.mItem15.getXform().setXPos(92.5);
+//    this.mItem15.getXform().setYPos(17.5);
+    this.mItem15.getXform().setXPos(-100);
+    this.mItem15.getXform().setYPos(-100);
+    this.mItem15.getXform().setSize(5,5);
     
     this.mItem16 = new Item(this.trans6);
-    this.mItem16.getXform().setXPos(81.25);
-    this.mItem16.getXform().setYPos(36.25);
+//    this.mItem16.getXform().setXPos(82.5);
+//    this.mItem16.getXform().setYPos(35);
+    this.mItem16.getXform().setXPos(-100);
+    this.mItem16.getXform().setYPos(-100);
+    this.mItem16.getXform().setSize(5,5);
     
     this.mItem17 = new Item(this.trans7);
-    this.mItem17.getXform().setXPos(78.75);
-    this.mItem17.getXform().setYPos(78.75);
+//    this.mItem17.getXform().setXPos(77.5);
+//    this.mItem17.getXform().setYPos(80);
+    this.mItem17.getXform().setXPos(-100);
+    this.mItem17.getXform().setYPos(-100);
+    this.mItem17.getXform().setSize(5,5);
     
     this.mItem18 = new Item(this.logo_item);
     this.mItem18.getXform().setXPos(50);
@@ -667,6 +703,7 @@ PlayGame3.prototype.initialize = function () {
     this.mItem19.getXform().setXPos(50);
     this.mItem19.getXform().setYPos(2.5);
     
+    // mItem20 是出口
     this.mItem20 = new Item(this.door);
     this.mItem20.getXform().setXPos(97.5);
     this.mItem20.getXform().setYPos(55);
@@ -686,6 +723,11 @@ PlayGame3.prototype.initialize = function () {
     this.mClueMsg.setColor([0.97, 0.952, 0.8196, 1]);
     this.mClueMsg.getXform().setPosition(75, 75);
     this.mClueMsg.setTextHeight(3);
+
+    this.mEverywhereMsg = new FontRenderable("");
+    this.mEverywhereMsg.setColor([1, 1, 1, 1]);
+    this.mEverywhereMsg.getXform().setPosition(0, 0);
+    this.mEverywhereMsg.setTextHeight(4);
      
     // 光效
     this._initializeLights(this.mHero.getXform().getPosition());
@@ -723,7 +765,8 @@ PlayGame3.prototype.initialize = function () {
      this.mItem20BBox = this.mItem20.getBBox();
      
      this.mStartCaption = new Caption(this.kCaption1);
-     this.mCaptionA = new Caption(this.kCaption2);
+     
+     this.mCaptionA = new Caption(this.kCaption2); //入口线索 自动
      this.mCaptionB = new Caption(this.kCaption3);
      this.mCaptionC = new Caption(this.kCaption4);
      this.mCaptionD = new Caption(this.kCaption5);
@@ -731,8 +774,29 @@ PlayGame3.prototype.initialize = function () {
      this.mCaptionF = new Caption(this.kCaption7);
      this.mCaptionG = new Caption(this.kCaption8);
      this.mCaptionH = new Caption(this.kCaption9);
-     this.mCaptionI = new Caption(this.kCaption10);
+     this.mCaptionI = new Caption(this.kCaption10); // B-I 拾取线索 
+     
      this.mEndCaption = new Caption(this.kCaption11);
+ 
+     var c = [1, 0.7, 0.73, 1];
+     this.itemPoint1 = new ItemPoint(68.75, 23.75);
+     this.itemPoint2 = new ItemPoint(13.75, 28.75);
+     this.itemPoint3 = new ItemPoint(13.75, 13.75);
+     this.itemPoint4 = new ItemPoint(48.75, 51.25);
+     this.itemPoint5 = new ItemPoint(33.75, 73.75);
+     this.itemPoint6 = new ItemPoint(88.75, 81.25);
+     this.itemPoint7 = new ItemPoint(66.25, 18.75);
+     this.itemPoint8 = new ItemPoint(86.25, 6.25);
+
+     this.itemPoint1.item.setColor(c);
+     this.itemPoint2.item.setColor(c);
+     this.itemPoint3.item.setColor(c);
+     this.itemPoint4.item.setColor(c);
+     this.itemPoint5.item.setColor(c);
+     this.itemPoint6.item.setColor(c);
+     this.itemPoint7.item.setColor(c);
+     this.itemPoint8.item.setColor(c);
+
      
      // For the function of key "v"
      this.mBlackScene = new Renderable();
@@ -741,12 +805,16 @@ PlayGame3.prototype.initialize = function () {
      this.mBlackScene.getXform().setSize(0,0);
      
      this.mHeroPoint = new Renderable();
-     this.mHeroPoint.setColor([1, 0.70, 0.73, 1]);
+     this.mHeroPoint.setColor([1, 0.94, 0.97, 1]);
      this.mHeroPoint.getXform().setPosition(50, 50);
      this.mHeroPoint.getXform().setRotationInRad(0.78); // In Radians
      this.mHeroPoint.getXform().setSize(0,0);
      
-
+     this.mEverywhere = new Renderable();
+     this.mEverywhere.setColor([0.86, 0.34, 0.12, 1]);
+     this.mEverywhere.getXform().setPosition(97.5, 55);
+     this.mEverywhere.getXform().setRotationInRad(0); // In Radians
+     this.mEverywhere.getXform().setSize(0,0);
 };
 
 PlayGame3.prototype._createALight = function (type, pos, dir, color, n, f, inner, outer, intensity, dropOff) {
@@ -873,7 +941,6 @@ PlayGame3.prototype.draw = function () {
     this.mBsquare3.draw(this.mCamera);
     this.mBsquare4.draw(this.mCamera);
     
-    this.mHero.draw(this.mCamera);
     this.mItem1.draw(this.mCamera);
     this.mItem2.draw(this.mCamera); 
     this.mItem3.draw(this.mCamera);
@@ -891,9 +958,13 @@ PlayGame3.prototype.draw = function () {
     this.mItem15.draw(this.mCamera);
     this.mItem16.draw(this.mCamera);
     this.mItem17.draw(this.mCamera);
-//     this.mItem18.draw(this.mCamera);
-//     this.mItem19.draw(this.mCamera);
+
+
     this.mItem20.draw(this.mCamera);
+    
+    this.mHero.draw(this.mCamera);
+    
+    this.mEverywhere.draw(this.mCamera);
     
     this.mStartCaption.draw(this.mCamera);
     this.mCaptionA.draw(this.mCamera);
@@ -908,10 +979,20 @@ PlayGame3.prototype.draw = function () {
     this.mEndCaption.draw(this.mCamera);    
     this.mBlackScene.draw(this.mCamera);
     this.mHeroPoint.draw(this.mCamera);
+   
+    this.itemPoint1.item.draw(this.mCamera);
+    this.itemPoint2.item.draw(this.mCamera);
+    this.itemPoint3.item.draw(this.mCamera);
+    this.itemPoint4.item.draw(this.mCamera);
+    this.itemPoint5.item.draw(this.mCamera);
+    this.itemPoint6.item.draw(this.mCamera);
+    this.itemPoint7.item.draw(this.mCamera);
+    this.itemPoint8.item.draw(this.mCamera);
     
     this.mMsg.draw(this.mCamera);
     this.mPositionMsg.draw(this.mCamera);
     this.mClueMsg.draw(this.mCamera);
+    this.mEverywhereMsg.draw(this.mCamera);
 
     
 };
@@ -946,13 +1027,95 @@ PlayGame3.prototype.switchCamera = function(toBig) {
     }
 }
 
+PlayGame3.prototype.showItemPoint= function() {
+    if (this.itemPoint1.isFound) {
+        this.itemPoint1.item.getXform().setSize(2, 2);
+    }
+    if (this.itemPoint2.isFound) {
+        this.itemPoint2.item.getXform().setSize(2, 2);
+    }
+    if (this.itemPoint3.isFound) {
+        this.itemPoint3.item.getXform().setSize(2, 2);
+    }
+    if (this.itemPoint4.isFound) {
+        this.itemPoint4.item.getXform().setSize(2, 2);
+    }
+    if (this.itemPoint5.isFound == true) {
+        this.itemPoint5.item.getXform().setSize(2, 2);
+    }
+    if (this.itemPoint6.isFound == true) {
+        this.itemPoint6.item.getXform().setSize(2, 2);
+    }
+    if (this.itemPoint7.isFound == true) {
+        this.itemPoint7.item.getXform().setSize(2, 2);
+    }  
+    if (this.itemPoint8.isFound == true) {
+        this.itemPoint8.item.getXform().setSize(2, 2);
+    } 
+
+}
+
+
+PlayGame3.prototype.closeItemPoint= function() {
+    
+    this.itemPoint1.item.getXform().setSize(0, 0);
+    this.itemPoint2.item.getXform().setSize(0, 0);
+    this.itemPoint3.item.getXform().setSize(0, 0);
+    this.itemPoint4.item.getXform().setSize(0, 0);
+    this.itemPoint5.item.getXform().setSize(0, 0);
+    this.itemPoint6.item.getXform().setSize(0, 0);
+    this.itemPoint7.item.getXform().setSize(0, 0);
+    this.itemPoint8.item.getXform().setSize(0, 0);
+
+}
+
+
+PlayGame3.prototype.addColor = function() {
+    var c = this.mHeroPoint.getColor();
+    c[1] -= 0.03;
+    c[2] -= 0.03
+    this.mHeroPoint.setColor(c);
+}
+
 PlayGame3.prototype.update = function () {
     this.mCamera.update();
     this.mHero.update();
     //this.mBg.update();
     
     
-//    this.mMsg.setText(this.kDelta);
+    if(this.mCaptionB.isRead){
+        this.mItem16.getXform().setXPos(82.5);
+        this.mItem16.getXform().setYPos(35);
+    }
+    
+    if(this.mCaptionC.isRead && this.mCaptionD.isRead){
+        this.mItem11.getXform().setXPos(20);
+        this.mItem11.getXform().setYPos(7.5);
+    }
+    
+    if(this.mCaptionE.isRead){
+        this.mItem9.getXform().setXPos(12.5);
+        this.mItem9.getXform().setYPos(85);
+    }
+    
+    if(this.mCaptionF.isRead){
+        this.mItem12.getXform().setXPos(47.5);
+        this.mItem12.getXform().setYPos(45);
+    }
+    
+    if(this.mCaptionG.isRead){
+        this.mItem17.getXform().setXPos(77.5);
+        this.mItem17.getXform().setYPos(80);
+    }
+    
+    if(this.mCaptionH.isRead && this.mCaptionI.isRead){
+        this.mItem15.getXform().setXPos(92.5);
+        this.mItem15.getXform().setYPos(17.5);
+    }
+    
+    
+    
+    
 
     var v = this.mGlobalLightSet.getLightAt(0).getColor();
     var v1 = this.mGlobalLightSet.getLightAt(1).getColor();
@@ -1264,132 +1427,446 @@ PlayGame3.prototype.update = function () {
     
     
     
-    // 道具一：加速
+    
     var hBbox = this.mHero.getBBox();
     if(hBbox.intersectsBound(this.mItem1BBox)){
-        this.mItem1.getXform().setXPos(-1);
-        this.mItem1.getXform().setYPos(-1);
+        this.mItem1.getXform().setXPos(-100);
+        this.mItem1.getXform().setYPos(-100);
         this.mItem1BBox = this.mItem1.getBBox();
     }
-    //道具二：减速
+    
     if(hBbox.intersectsBound(this.mItem2BBox)){
-        this.mItem2.getXform().setXPos(-1);
-        this.mItem2.getXform().setYPos(-1);
+        this.mItem2.getXform().setXPos(-100);
+        this.mItem2.getXform().setYPos(-100);
         this.mItem2BBox = this.mItem2.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem3BBox)){
-//        this.mGlobalLightSet.getLightAt(0).setIntensity(7);
-//        this.mGlobalLightSet.getLightAt(0).setFar(15);
-        this.mItem3.getXform().setXPos(-1);
-        this.mItem3.getXform().setYPos(-1);
+        this.mItem3.getXform().setXPos(-100);
+        this.mItem3.getXform().setYPos(-100);
         this.mItem3BBox = this.mItem3.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem4BBox)){
-//        this.mGlobalLightSet.getLightAt(0).setIntensity(3);
-//        this.mGlobalLightSet.getLightAt(0).setNear(3)
-//        this.mGlobalLightSet.getLightAt(0).setFar(8);
-        this.mItem4.getXform().setXPos(-1);
-        this.mItem4.getXform().setYPos(-1);
+        this.mItem4.getXform().setXPos(-100);
+        this.mItem4.getXform().setYPos(-100);
         this.mItem4BBox = this.mItem4.getBBox();
     }
    
     if(hBbox.intersectsBound(this.mItem5BBox)){     
-        this.mItem5.getXform().setXPos(-1);
-        this.mItem5.getXform().setYPos(-1);
+        this.mItem5.getXform().setXPos(-100);
+        this.mItem5.getXform().setYPos(-100);
         this.mItem5BBox = this.mItem5.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem6BBox)){     
-        this.mItem6.getXform().setXPos(-1);
-        this.mItem6.getXform().setYPos(-1);
+        this.mItem6.getXform().setXPos(-100);
+        this.mItem6.getXform().setYPos(-100);
         this.mItem6BBox = this.mItem6.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem7BBox)){     
-        this.mItem7.getXform().setXPos(-1);
-        this.mItem7.getXform().setYPos(-1);
+        this.mItem7.getXform().setXPos(-100);
+        this.mItem7.getXform().setYPos(-100);
         this.mItem7BBox = this.mItem7.getBBox();
     }
     
     if(hBbox.intersectsBound(this.mItem8BBox)){     
-        this.mItem8.getXform().setXPos(-1);
-        this.mItem8.getXform().setYPos(-1);
+        this.mItem8.getXform().setXPos(-100);
+        this.mItem8.getXform().setYPos(-100);
         this.mItem8BBox = this.mItem8.getBBox();
     }
     
-    if(hBbox.intersectsBound(this.mItem9BBox)){ 
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(35, 55);
-//        this.mItem9.getXform().setXPos(-1);
-//        this.mItem9.getXform().setYPos(-1);
-//        this.mItem9BBox = this.mItem9.getBBox();
+//    if(hBbox.intersectsBound(this.mItem9BBox)){ 
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(35, 55);
+//    }
+    // 9 瞬移
+    
+    var size = this.mHero.getXform().getSize();
+    
+    if (this.judgeArea(12.5, 85, 1.2) && this.mCaptionE.isRead === true) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(12.5, 85, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(35);
+            this.mHero.getXform().setYPos(55);            
+        }
     }
     
-    if(hBbox.intersectsBound(this.mItem10BBox)){ 
-        this.mHero.getXform().setSize(1.5, 1.5);
-        
-//        this.mItem10.getXform().setXPos(-1);
-//        this.mItem10.getXform().setYPos(-1);
-//        this.mItem10BBox = this.mItem10.getBBox();
+    if(this.judgeArea(35, 55, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(35, 55, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
+    }
+     
+    
+//    if(hBbox.intersectsBound(this.mItem10BBox)){ 
+//        this.mHero.getXform().setSize(1.5, 1.5);        
+//    }
+    
+    //var size = this.mHero.getXform().getSize();
+    // 10 变小
+    if (this.judgeArea(11.25, 71.25, 1.2) && size[0] > 1.55) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+            if(orix >= 1.5 && oriy >= 1.5){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }
+        }else{
+            this.IsMove = true;
+            this.timer = 0;
+        }
+    }else if(this.judgeArea(11.25, 71.25, 1.2) && !(size[0] > 1.55)){
+        this.IsMove = true;
+        this.timer = 0;
     }
     
-    if(hBbox.intersectsBound(this.mItem11BBox)){    
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(47.5, 57.5);
-//        this.mItem11.getXform().setXPos(-1);
-//        this.mItem11.getXform().setYPos(-1);
-//        this.mItem11BBox = this.mItem11.getBBox();
+//    if(hBbox.intersectsBound(this.mItem11BBox)){    
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(47.5, 57.5);
+//    }
+    
+    // 11 shunyi
+    if (this.judgeArea(20, 7.5, 1.2) && this.mCaptionC.isRead === true && this.mCaptionD.isRead === true) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(20, 7.5, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(47.5);
+            this.mHero.getXform().setYPos(57.5);            
+        }
     }
     
-    if(hBbox.intersectsBound(this.mItem12BBox)){
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(87.5, 72.6);
-//        this.mItem12.getXform().setXPos(-1);
-//        this.mItem12.getXform().setYPos(-1);
-//        this.mItem12BBox = this.mItem12.getBBox();
+    if(this.judgeArea(47.5, 57.5, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(47.5, 57.5, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
     }
     
-    if(hBbox.intersectsBound(this.mItem13BBox)){
-        this.mHero.getXform().setSize(1.5, 1.5);
-        
-//        this.mItem13.getXform().setXPos(-1);
-//        this.mItem13.getXform().setYPos(-1);
-//        this.mItem13BBox = this.mItem13.getBBox();
+//    if(hBbox.intersectsBound(this.mItem12BBox)){
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(87.5, 72.5);
+//    }
+    
+    // 12 shunyi
+    
+    if (this.judgeArea(47.5, 45, 1.2) && this.mCaptionE.isRead === true && this.mCaptionF.isRead === true) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(47.5, 45, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(87.5);
+            this.mHero.getXform().setYPos(72.5);            
+        }
     }
     
-    if(hBbox.intersectsBound(this.mItem14BBox)){
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(82.5, 25);
-//        this.mItem14.getXform().setXPos(-1);
-//        this.mItem14.getXform().setYPos(-1);
-//        this.mItem14BBox = this.mItem14.getBBox();
+    if(this.judgeArea(87.5, 72.5, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(87.5, 72.5, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
     }
     
-    if(hBbox.intersectsBound(this.mItem15BBox)){
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(57.5, 77.5);
-//        this.mItem15.getXform().setXPos(-1);
-//        this.mItem15.getXform().setYPos(-1);
-//        this.mItem15BBox = this.mItem15.getBBox();
+//    if(hBbox.intersectsBound(this.mItem13BBox)){
+//        this.mHero.getXform().setSize(1.5, 1.5);
+//        
+////        this.mItem13.getXform().setXPos(-1);
+////        this.mItem13.getXform().setYPos(-1);
+////        this.mItem13BBox = this.mItem13.getBBox();
+//    }
+    
+    // 13 变小
+    if (this.judgeArea(53.75, 36.25, 1.2) && size[0] > 1.55) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+            if(orix >= 1.5 && oriy >= 1.5){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }
+        }else{
+            this.IsMove = true;
+            this.timer = 0;
+        }
+    }else if(this.judgeArea(53.75, 36.25, 1.2) && !(size[0] > 1.55)){
+        this.IsMove = true;
+        this.timer = 0;
     }
     
     
-    if(hBbox.intersectsBound(this.mItem16BBox)){
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(52.5, 20);
-//        this.mItem16.getXform().setXPos(-1);
-//        this.mItem16.getXform().setYPos(-1);
-//        this.mItem16BBox = this.mItem16.getBBox();
+    
+//    if(hBbox.intersectsBound(this.mItem14BBox)){
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(82.5, 25);
+//    }
+    
+    // 14 shunyi
+    if (this.judgeArea(57.5, 45, 1.2)) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(57.5, 45, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(82.5);
+            this.mHero.getXform().setYPos(25);            
+        }
     }
     
-    if(hBbox.intersectsBound(this.mItem17BBox)){
-        this.mHero.getXform().setSize(3, 3);
-        this.mHero.getXform().setPosition(77.5, 12.5);
-//        this.mItem17.getXform().setXPos(-1);
-//        this.mItem17.getXform().setYPos(-1);
-//        this.mItem17BBox = this.mItem17.getBBox();
+    if(this.judgeArea(82.5, 25, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(82.5, 25, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
+    }
+    
+//    if(hBbox.intersectsBound(this.mItem15BBox)){
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(57.5, 77.5);
+//    }
+
+    // 15 shunyi
+    if (this.judgeArea(92.5, 17.5, 1.2) && this.mCaptionH.isRead === true && this.mCaptionI.isRead === true) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(92.5, 17.5, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(57.5);
+            this.mHero.getXform().setYPos(77.5);            
+        }
+    }
+    
+    if(this.judgeArea(57.5, 77.5, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(57.5, 77.5, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
+    }
+   
+    
+//    if(hBbox.intersectsBound(this.mItem16BBox)){
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(52.5, 20);
+//    }
+
+    // 16 shunyi 2
+    
+    if (this.judgeArea(82.5, 35, 1.2) && this.mCaptionB.isRead === true) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(82.5, 35, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(52.5);
+            this.mHero.getXform().setYPos(20);            
+        }
+    }
+    
+    if(this.judgeArea(52.5, 20, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(52.5, 20, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
+    }
+
+  
+//    if(hBbox.intersectsBound(this.mItem17BBox)){
+//        this.mHero.getXform().setSize(3, 3);
+//        this.mHero.getXform().setPosition(77.5, 12.5);
+//    }
+ 
+ 
+    // 17 shunyi
+    
+    if (this.judgeArea(77.5, 80, 1.2) && this.mCaptionG.isRead === true) {
+        this.IsMove = false;
+        this.timer += 1;
+        if(size[0] >= 0.1){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];        
+            orix -= this.sDelta;
+            oriy -= this.sDelta;
+                        
+            if(orix >= 0.05 && oriy >= 0.05){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }else if(this.judgeArea(77.5, 80, 1.2) && (size[0] < 0.10)){
+            //this.IsMove = true;
+            this.timer = 0;
+            this.mHero.getXform().setXPos(77.5);
+            this.mHero.getXform().setYPos(12.5);            
+        }
+    }
+    
+    if(this.judgeArea(77.5, 12.5, 2) && size[0] < 2.95 && this.IsMove === false){
+        this.timer += 1;
+        if(this.timer <= 30){
+            var size = this.mHero.getXform().getSize();
+            var orix = size[0];
+            var oriy = size[1];   
+            orix += 2 * this.sDelta;
+            oriy += 2 * this.sDelta;
+            
+            if(orix <= 3.0 && oriy <= 3.0){
+                this.mHero.getXform().setSize(orix, oriy);
+                this.mHeroBBox = this.mHero.getBBox();
+            }          
+        }
+    }else if(this.judgeArea(77.5, 12.5, 2) && !(size[0] < 2.95)){
+        this.IsMove = true;
     }
     
 
@@ -1417,11 +1894,13 @@ PlayGame3.prototype.update = function () {
             this.switchCamera(false); 
             this.mBlackScene.getXform().setSize(0,0);
             this.mHeroPoint.getXform().setSize(0,0);
+            this.mEverywhere.getXform().setSize(0,0);
             this.IsMove = true;
             this.mClueMsg.setText("");
             this.mMsg.setText("");
             this.mPositionMsg.setText("");
-
+            this.mEverywhereMsg.setText("");
+            this.closeItemPoint();
         //}
     }
     
@@ -1438,10 +1917,20 @@ PlayGame3.prototype.update = function () {
             this.mPositionMsg.getXform().setPosition(this.mHero.getXform().getXPos()-5, this.mHero.getXform().getYPos()+0.8);
             this.mPositionMsg.setText("- You -");
             this.mPositionMsg.setTextHeight(2.7);
-            this.mClueMsg.setText("Lost memories:" + this.mClueNum);
-            this.mClueMsg.setTextHeight(2.5);
-            this.mClueMsg.getXform().setPosition(75, 95);
+            this.mClueMsg.setText("- Lost memories:" + this.mClueNum + " -");
+            this.mClueMsg.setTextHeight(2.2);
+            this.mClueMsg.getXform().setPosition(4, 98);
             
+            // For everywhere
+            if (this.foundEntrance) {
+                this.mEverywhereMsg.setText("Exit");
+                this.mEverywhereMsg.getXform().setPosition(94.5, 55);
+                this.mEverywhereMsg.setTextHeight(2);
+                this.mEverywhere.getXform().setPosition(96.5, 55);
+                this.mEverywhere.getXform().setSize(3,3);
+            }
+            
+            this.showItemPoint();
             this.IsMove = false;
         }
     }
@@ -1455,7 +1944,8 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Start Caption
-    if (this.judgeArea(57.5, 97.5, 3) && (this.mStartCaption.isRead == false)) {
+    //if (this.judgeArea(57.5, 97.5, 3) && (this.mStartCaption.isRead == false)) {
+    if ((this.mStartCaption.isRead == false)) {
         this.mStartCaption.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);
         this.IsMove = false;
@@ -1464,109 +1954,126 @@ PlayGame3.prototype.update = function () {
     
     if ((this.mStartTimer > 0) && (this.mStartCaption.isRead == true)) {
         this.mStartTimer --;
-        if (this.mStartTimer == 0) {
+        if (this.mStartTimer === 0) {
             this.mStartCaption.mCaption1.getXform().setSize(0, 0);     
             this.switchCamera(false); 
             this.IsMove = true; 
+            this.mStartTimer = -100;
         }
     }
     
-    // For the Caption A
-    if (this.judgeArea(68,75, 23.75, 2) && (this.mCaptionA.isRead == false)) {
+    //开场自动线索
+    if (this.judgeArea(57.5, 90.5, 1.8) && (this.mCaptionA.isRead == false)) {
         this.mCaptionA.mCaption1.getXform().setSize(100,100);
-        this.switchCamera(true);
+        this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionA.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
-
+        this.addColor();
     }
- 
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionA.isRead == true)) {
+        
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionA.isRead == true)) {
         this.mCaptionA.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
         this.IsMove = true; 
         this.mMsg.setText("");
     }
     
-    // For the Caption B
-    if (this.judgeArea(13.75, 28.75, 2) && (this.mCaptionB.isRead == false)) {
+    
+    
+     //For the Caption B
+ 
+    if (this.judgeArea(68.75, 23.75, 1.5) && (this.mCaptionB.isRead == false)) {
         this.mCaptionB.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionB.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
-        
+        this.addColor();
+        this.itemPoint1.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
     }
         
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionB.isRead == true)) {
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionB.isRead == true)) {
         this.mCaptionB.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
         this.IsMove = true; 
         this.mMsg.setText("");
     }
     
-    
     // For the Caption C
-    if (this.judgeArea(13.75, 13.75, 2) && (this.mCaptionC.isRead == false)) {
-        this.mCaptionC.mCaption1.getXform().setSize(120,120);
+    if (this.judgeArea(13.75, 28.75, 1.8) && (this.mCaptionC.isRead == false)) {
+        this.mCaptionC.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionC.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
+        this.addColor();
+        this.itemPoint2.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionC.isRead == true)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionC.isRead == true)) {
         this.mCaptionC.mCaption1.getXform().setSize(0, 0);     
-        this.switchCamera(false); 
-        this.IsMove = true;
-        this.mMsg.setText("");
-    }
-   
-    // For the Caption D
-    if (this.judgeArea(48.75, 51.25, 2) && (this.mCaptionD.isRead == false)) {
-        this.mCaptionD.mCaption1.getXform().setSize(100,100);
-        this.switchCamera(true);    
-        this.IsMove = false;
-        this.mCaptionD.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
-        this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
-        this.mClueNum --;
-    }
-        
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionD.isRead == true)) {
-        this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
         this.IsMove = true; 
         this.mMsg.setText("");
     }
     
+    
+    // For the Caption D
+    if (this.judgeArea(13.75, 13.75, 1.8) && (this.mCaptionD.isRead == false)) {
+        this.mCaptionD.mCaption1.getXform().setSize(120,120);
+        this.switchCamera(true);    
+        this.IsMove = false;
+        this.mCaptionD.isRead = true;
+        this.mMsg.setText("- Click Enter to close - ");
+        this.mMsg.setTextHeight(2);
+        this.mMsg.getXform().setPosition(72,2);
+        this.mClueNum --;
+        this.addColor();
+        this.itemPoint3.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
+    }
+        
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionD.isRead == true)) {
+        this.mCaptionD.mCaption1.getXform().setSize(0, 0);     
+        this.switchCamera(false); 
+        this.IsMove = true;
+        this.mMsg.setText("");
+    }
+   
     // For the Caption E
-    if (this.judgeArea(33.75, 73.75, 2) && (this.mCaptionE.isRead == false)) {
+    if (this.judgeArea(48.75, 51.25, 1.8) && (this.mCaptionE.isRead == false)) {
         this.mCaptionE.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionE.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
+        this.addColor();
+        this.itemPoint4.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
+
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionE.isRead == true)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionE.isRead == true)) {
         this.mCaptionE.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
         this.IsMove = true; 
@@ -1574,60 +2081,93 @@ PlayGame3.prototype.update = function () {
     }
     
     // For the Caption F
-    if (this.judgeArea(88.75, 81.25, 2) && (this.mCaptionF.isRead == false)) {
+    if (this.judgeArea(33.75, 73.75, 1.8) && (this.mCaptionF.isRead == false)) {
         this.mCaptionF.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionF.isRead = true;
-
-        this.mMsg.setText("- Click B to close - ");
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
+        this.addColor();
+        this.itemPoint5.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
+
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionF.isRead == true)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionF.isRead == true)) {
         this.mCaptionF.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
-        this.IsMove = true;
+        this.IsMove = true; 
         this.mMsg.setText("");
     }
-  
+    
     // For the Caption G
-    if (this.judgeArea(66.25, 18.75, 2) && (this.mCaptionG.isRead == false)) {
+    if (this.judgeArea(88.75, 81.25, 1.8) && (this.mCaptionG.isRead == false)) {
         this.mCaptionG.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionG.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
+
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
+        this.addColor();
+        this.itemPoint6.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
     }
+        
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionG.isRead == true)) {
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionG.isRead == true)) {
         this.mCaptionG.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
         this.IsMove = true;
         this.mMsg.setText("");
     }
-    
+  
     // For the Caption H
-    if (this.judgeArea(86.25, 6.25, 2) && (this.mCaptionH.isRead == false)) {
+    if (this.judgeArea(66.25, 18.75, 1.8) && (this.mCaptionH.isRead == false)) {
         this.mCaptionH.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
         this.mCaptionH.isRead = true;
-        this.mMsg.setText("- Click B to close - ");
+        this.mMsg.setText("- Click Enter to close - ");
         this.mMsg.setTextHeight(2);
-        this.mMsg.getXform().setPosition(78,2);
+        this.mMsg.getXform().setPosition(72,2);
         this.mClueNum --;
+        this.addColor();
+        this.itemPoint7.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionH.isRead == true)) {
+        this.mCaptionH.mCaption1.getXform().setSize(0, 0);     
+        this.switchCamera(false); 
+        this.IsMove = true;
+        this.mMsg.setText("");
+    }
+    
+    // For the Caption I
+    if (this.judgeArea(86.25, 6.25, 1.8) && (this.mCaptionI.isRead == false)) {
+        this.mCaptionI.mCaption1.getXform().setSize(100,100);
+        this.switchCamera(true);    
+        this.IsMove = false;
+        this.mCaptionI.isRead = true;
+        this.mMsg.setText("- Click Enter to close - ");
+        this.mMsg.setTextHeight(2);
+        this.mMsg.getXform().setPosition(72,2);
+        this.mClueNum --;
+        this.addColor();
+        this.itemPoint8.isFound = true;
+        gEngine.AudioClips.playACue(this.soundbook);
     }
         
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B) && (this.mCaptionH.isRead == true)) {
-        this.mCaptionH.mCaption1.getXform().setSize(0, 0);     
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Enter) && (this.mCaptionI.isRead == true)) {
+        this.mCaptionI.mCaption1.getXform().setSize(0, 0);     
         this.switchCamera(false); 
         this.IsMove = true; 
         this.mMsg.setText("");
@@ -1638,6 +2178,7 @@ PlayGame3.prototype.update = function () {
     
     // if meet the entrance
     if (this.judgeArea(97.5, 55, 6) && (this.mEndCaption.isRead == false)) {
+        this.foundEntrance = true;
         if ((this.mCaptionA.isRead) && (this.mCaptionB.isRead) && (this.mCaptionC.isRead) && (this.mCaptionD.isRead) && (this.mCaptionE.isRead)
                 && (this.mCaptionF.isRead) && (this.mCaptionG.isRead) && (this.mCaptionH.isRead)) {
             this.mEndCaption.mCaption1.getXform().setSize(100,100);
@@ -1671,7 +2212,9 @@ PlayGame3.prototype.update = function () {
     }
    
 //   // This is used to show the current mouse position.
-//    var msg = " X=" + gEngine.Input.getMousePosX()/6.3 + " Y=" + gEngine.Input.getMousePosY()/6.3;
+    //var msg = " X=" + gEngine.Input.getMousePosX()/6.3 + " Y=" + gEngine.Input.getMousePosY()/6.3;
+//        var msg = " " + this.mHero.getXform().getPosition();
+//
 //        this.mMsg.setText(msg); 
 //        this.mMsg.getXform().setPosition(50,2);
         

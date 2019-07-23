@@ -13,7 +13,7 @@
 
     function MyGame() {
         //this.kUIButton = "assets/UI/button.png";
-        this.kLogo = "assets/logo1_1.png";
+        this.kLogo = "assets/logo.png";
 
         // The camera to view the scene
         this.mCamera = null;
@@ -98,7 +98,7 @@
 
         this.mCamera.setupViewProjection();
         this.mLogo.draw(this.mCamera);
-        this.mSpark.draw(this.mCamera);
+//        this.mSpark.draw(this.mCamera);
 //      this.mMsg.draw(this.mCamera);
         this.mMsg2.draw(this.mCamera);
         

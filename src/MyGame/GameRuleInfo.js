@@ -14,7 +14,7 @@
 
 function GameRuleInfo() {
     //this.kUIButton = "assets/UI/button.png";
-    this.kLogo = "assets/operation.png";
+    this.kLogo = "assets/operation_1.png";
 
     // The camera to view the scene
     this.mCamera = null;
@@ -38,7 +38,7 @@ GameRuleInfo.prototype.unloadScene = function () {
 GameRuleInfo.prototype.initialize = function () {
     // Step A: set up the cameras
     this.mCamera = new Camera(
-        vec2.fromValues(50, 40), // position of the camera
+        vec2.fromValues(50, 35), // position of the camera
         100,                     // width of camera
         [0, 0, 630, 630]         // viewport (orgX, orgY, width, height)
     );

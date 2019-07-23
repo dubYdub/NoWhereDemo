@@ -28,7 +28,7 @@ var setup = function(){
     document.getElementById("GLCanvas").height=cheight.substr(0,cheight.length - 2);
     document.write("<div class='LoadingSpinnerAnimation' id='LoadingSpinner'></div>");
     document.write("<p class='LoadingDotsAnimation' id='LoadingDots'>Loading<span>.</span><span>.</span><span>.</span></p>");
-    document.write("<div id='LoadingScreenProgress'><div id='LoadingScreenBar'>0%</div></div>");
+    document.write("<div id='LoadingScreenProgress'><div id='LoadingScreenBar'></div></div>");
 };
 
 /**
@@ -38,8 +38,8 @@ var setup = function(){
 var start = function(){
     document.getElementById("LoadingSpinner").style.display = "block";
     document.getElementById("LoadingDots").style.display="block";
-    document.getElementById("LoadingScreenBar").style.display="block";
-    document.getElementById("LoadingScreenProgress").style.display="block";
+    document.getElementById("LoadingScreenBar").style.display="none";
+    document.getElementById("LoadingScreenProgress").style.display="none";
     gEngine.Core.clearCanvas([0,0,0,1]);
 };
 /**

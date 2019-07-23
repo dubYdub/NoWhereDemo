@@ -3,13 +3,13 @@
 */
 p {
   color: white;
-  font: 300 4em/150% Impact;
+  font: 200 4em/150% Impact;
   position: absolute;
   z-index: 1;
   }
 
 .LoadingDotsAnimation {
-  font-size: 40px;
+  font-size: 20px;
 }
 
 .LoadingDotsAnimation span {
@@ -40,12 +40,12 @@ p {
   }
 }
         .LoadingSpinnerAnimation {
-  border: 16px solid #f3f3f3;
+  border: 0px solid #000000;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
+  border-top: 5px solid #ffffff;
+  width: 100px;
+  height: 100px;
+  animation: spin 3s linear infinite;
   position: absolute;
   z-index: 1;
 }
@@ -57,18 +57,18 @@ p {
   
   #LoadingScreenProgress {
     width: 100%;
-    height: 30px;
+    height: 20px;
     top:calc(50% + 120px);
-    background-color: grey;
-    position: absolute;
+    background-color: black;
+    position:absolute ;
     z-index: 2;
   }
     #LoadingScreenBar {
-        width: 0%;
-        height: 30px;
-        background-color: green;
+        width: 100%;
+        height: 0px;
+        background-color: white;
         position: absolute;
-        font-size: 30px;
+        font-size: 0px;
         z-index: 3;
     }
     
