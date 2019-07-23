@@ -1527,7 +1527,8 @@ PlayGame3.prototype.update = function () {
      
     
 //    if(hBbox.intersectsBound(this.mItem10BBox)){ 
-//        this.mHero.getXform().setSize(1.5, 1.5);        
+//        this.mHero.getXform().setSize(
+  , 1.5);        
 //    }
     
     //var size = this.mHero.getXform().getSize();
@@ -1987,7 +1988,7 @@ PlayGame3.prototype.update = function () {
     
      //For the Caption B
  
-    if (this.judgeArea(68.75, 23.75, 1.5) && (this.mCaptionB.isRead == false)) {
+    if (this.judgeArea(68.75, 23.75, 2) && (this.mCaptionB.isRead == false)) {
         this.mCaptionB.mCaption1.getXform().setSize(100,100);
         this.switchCamera(true);    
         this.IsMove = false;
