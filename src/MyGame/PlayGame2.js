@@ -1356,7 +1356,7 @@ PlayGame2.prototype.update = function () {
             // For everywhere
             if (this.foundEntrance) {
                 this.mEverywhereMsg.setText("Exit");
-                this.mEverywhereMsg.getXform().setPosition(36.5, 52.5);
+                this.mEverywhereMsg.getXform().setPosition(36, 51);
                 this.mEverywhereMsg.setTextHeight(2);
                 this.mEverywhere.getXform().setPosition(37.5,52.5);
                 this.mEverywhere.getXform().setSize(3,3);
